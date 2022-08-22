@@ -1,9 +1,7 @@
-import svelte from '@sveltejs/vite-plugin-svelte'
+import { defineConfig } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 import autoprefixer from 'autoprefixer'
-import vite from 'vite'
-import fs from 'fs';
-
-const { defineConfig } = vite;
+import scss from 'rollup-plugin-scss';
 
 export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production'
@@ -20,6 +18,14 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     plugins: [
+      scss({
+        processor: () => postcss([
+          autoprefixer()
+        ]),
+        output: './public/global.css',
+        outputStyle: 'compressed',
+        watch: './src/styles'
+      }),
       svelte()
     ],
     build: {

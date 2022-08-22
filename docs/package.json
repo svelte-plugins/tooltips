@@ -8,10 +8,13 @@
   },
   "devDependencies": {
     "@svelte-plugins/tooltips": "../",
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.5",
-    "autoprefixer": "^10.2.5",
-    "postcss": "^8.2.8",
-    "svelte": "^3.35.0",
-    "vite": "^2.1.3"
+    "@sveltejs/vite-plugin-svelte": "^1.0.2",
+    "autoprefixer": "^10.4.8",
+    "postcss": "^8.4.16",
+    "rollup-plugin-scss": "^3.0.0",
+    "sass": "^1.54.5",
+    "svelte": "^3.49.0",
+    "svelte-prismjs": "^1.0.2",
+    "vite": "^3.0.9"
   }
 }

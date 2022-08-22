@@ -1,5 +1,6 @@
 <script>
-	import { Tooltip, tooltip } from '@svelte-plugins/tooltip';
+  import Prism from 'svelte-prismjs';
+  import { Tooltip, tooltip } from '@svelte-plugins/tooltips';
 	import ComponentAsContent from './ComponentAsContent.svelte';
 </script>
 
@@ -14,27 +15,63 @@
 	<h2>Examples using action</h2>
 
 	<div class="example">
-		This tooltip should appear on the <u title="hello world!" use:tooltip>top</u> and use the content in the <code>title</code> attribute.
+		<p>This tooltip should appear on the <u title="hello world!" use:tooltip>top</u> and use the content in the <code>title</code> attribute.</p>
+
+    <Prism code={'<u title="hello world!" use:tooltip>top</u>'} />
+  </div>
+
+	<div class="example">
+		<p>This tooltip should appear on the <i use:tooltip={{ content: '<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>', position: 'top', animation: 'slide', arrow: false }}>top</i>.</p>
+
+    <Prism code={"<i use:tooltip={{ content: '<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>', position: 'top', animation: 'slide', arrow: false }}>top</i>"} />
+  </div>
+
+	<div class="example">
+		<p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', theme: 'tooltip-theme' }}>right</b>.</p>
+
+    <Prism code={"<b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', theme: 'tooltip-theme' }}>right</b>"} />
+
+    <p>This is also demonstrates the use of the <code>theme</code> property:</p>
+
+     <Prism showLineNumbers={true} code={
+     `
+:global(.tooltip.tooltip-theme) {
+  --tooltip-background-color: hotpink;
+  --tooltip-box-shadow: 0 1px 8px pink;
+}
+`} />
 	</div>
 
 	<div class="example">
-		This tooltip should appear on the <i use:tooltip={{ content: '<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>', position: 'top', animation: 'slide', arrow: false }}>top</i>.
-	</div>
+		<p>This tooltip should appear on the <u use:tooltip={{ content: 'Look at my awesome tooltip down here.', position: 'bottom', autoPosition: true, align: 'center', animation: 'slide' }}>bottom</u> with text centered and auto-positioning turned on.</p>
+
+    <Prism code={"<u use:tooltip={{ content: 'Look at my awesome tooltip down here.', position: 'bottom', autoPosition: true, align: 'center', animation: 'slide' }}>bottom</u>"} />
+  </div>
 
 	<div class="example">
-		This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', theme: 'tooltip-theme' }}>right</b>.
-	</div>
+		<p>This tooltip should appear to the <u use:tooltip={{ content: 'I can even appear to the left - tada!', position: 'left', style: { backgroundColor: 'red' }, animation: 'puff' }}>left</u>.</p>
+    <Prism code={"<u use:tooltip={{ content: 'I can even appear to the left - tada!', position: 'left', style: { backgroundColor: 'red' }, animation: 'puff' }}>left</u>"} />
+  </div>
 
 	<div class="example">
-		This tooltip should appear on the <u use:tooltip={{ content: 'Look at my awesome tooltip down here.', position: 'bottom', autoPosition: true, align: 'center', animation: 'slide' }}>bottom</u> with text centered and auto-positioning turned on.
-	</div>
+		<p>This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.</p>
+    <Prism showLineNumbers={true} code={`
+<script>
+  import ComponentAsContent from './ComponentAsContent.svelte';
+</script>
 
-	<div class="example">
-		This tooltip should appear to the <u use:tooltip={{ content: 'I can even appear to the left - tada!', position: 'left', style: { backgroundColor: 'red' }, animation: 'puff' }}>left</u>.
-	</div>
-
-	<div class="example">
-		This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.
+<u use:tooltip={{
+  content: {
+    component: ComponentAsContent,
+    props: {
+      title: 'Title from props'
+    }
+  },
+  position: 'left',
+  style: {
+    backgroundColor: 'blue'
+  }
+}}>left</u>`} />
 	</div>
 
 	<hr />
@@ -50,65 +87,115 @@
 	</div>
 
 	<div class="example">
-		This tooltip should appear to the
-		<Tooltip
-		  content="Whoa! I appear to the right."
-      position="right"
-			theme="tooltip-theme">
-			<b>right</b>.
-		</Tooltip>
+		<p>
+      This tooltip should appear to the
+      <Tooltip
+        content="Whoa! I appear to the right."
+        position="right"
+        theme="tooltip-theme">
+        <b>right</b>.
+      </Tooltip>
+    </p>
+    <Prism showLineNumbers={true} code={`
+<Tooltip
+  content="Whoa! I appear to the right."
+  position="right"
+  theme="tooltip-theme">
+  <b>right</b>
+</Tooltip>
+`} />
+  </div>
+
+	<div class="example">
+		<p>
+      This tooltip should appear on the
+      <Tooltip
+        content="Look at my awesome tooltip down here."
+        position="bottom"
+        autoPosition
+        align="center"
+        animation="slide">
+        <u>bottom</u>
+      </Tooltip>
+      with text centered and auto-positioning turned on.
+    </p>
+
+    <Prism showLineNumbers={true} code={`
+<Tooltip
+  content="Look at my awesome tooltip down here."
+  position="bottom"
+  autoPosition
+  align="center"
+  animation="slide">
+  <u>bottom</u>
+</Tooltip>
+`} />
 	</div>
 
 	<div class="example">
-		This tooltip should appear on the
-		<Tooltip
-      content="Look at my awesome tooltip down here."
-			position="bottom"
-			autoPosition
-			align="center"
-			animation="slide">
-			<u>bottom</u>
-		</Tooltip>
-		with text centered and auto-positioning turned on.
-	</div>
+		<p>
+      This tooltip should appear to the
+		  <Tooltip content="I can even appear to the left - tada!" style={{ backgroundColor: 'red' }} animation="puff" position="left"><u>left</u>.</Tooltip>
+    </p>
+    <Prism showLineNumbers={true} code={`
+<Tooltip
+  content="I can even appear to the left - tada!"
+   style={{ backgroundColor: 'red' }}
+   animation="puff"
+   position="left">
+   <u>left</u>
+</Tooltip>
+`} />
+  </div>
 
 	<div class="example">
-		This tooltip should appear to the
-		<Tooltip content="I can even appear to the left - tada!" style={{ backgroundColor: 'red' }} animation="puff" position="left"><u>left</u>.
-		</Tooltip>
-	</div>
-
-	<div class="example">
-		This tooltip should appear to the
-		<Tooltip
-			content={{ component: ComponentAsContent, props: { title: 'Title from props' } }}
-			style={{ backgroundColor: 'blue' }}
-			animation="slide"
-			position="left"><u>left</u>
-		</Tooltip>
+    <p>
+      This tooltip should appear to the
+      <Tooltip
+        content={{ component: ComponentAsContent, props: { title: 'Title from props' } }}
+        style={{ backgroundColor: 'blue' }}
+        animation="slide"
+        position="left"><u>left</u>
+      </Tooltip>
 			and render the passed component as the tooltip content.
-	</div>
+    </p>
+    <Prism showLineNumbers={true} code={`
+<Tooltip
+  content={{ component: ComponentAsContent, props: { title: 'Title from props' } }}
+  style={{ backgroundColor: 'blue' }}
+  animation="slide"
+  position="left">
+  <u>left</u>
+</Tooltip>
+`} />
+  </div>
 
 	<hr />
 
 	<h2>Animations</h2>
 
 	<div class="example">
-		This tooltip uses the <b title="Just another tooltip." use:tooltip={{ animation: 'fade' }}>Fade</b> animation. <code>animation: 'fade'</code>
-	</div>
+		<p>This tooltip uses the <b title="Just another tooltip." use:tooltip={{ animation: 'fade' }}>Fade</b> animation.</p>
+    <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'fade' }}>tooltip</b>"} />
+  </div>
 	<div class="example">
-		This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide' }}>Slide</b> animation. <code>animation: 'slide'</code>
-	</div>
+		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide' }}>Slide</b> animation.</p>
+    <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide' }}>tooltip</b>"} />
+  </div>
 	<div class="example">
-		This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff', maxWidth: 140 }}>Puff</b> animation. <code>animation: 'puff'</code>
+		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff', maxWidth: 140 }}>Puff</b> animation.</p>
+    <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff' }}>tooltip</b>"} />
+  </div>
+
+	<div class="example">
+		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce', maxWidth: 140 }}>Bounce</b> animation.</p>
+    <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce' }}>tooltip</b>"} />
 	</div>
 
 	<div class="example">
-		This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce', maxWidth: 140 }}>Bounce</b> animation.	<code>animation: 'bounce'</code>
-	</div>
+		<p>Animations will follow the positioning of the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide', position: 'left' }}>tooltip</b>.</p>
 
-	<div class="example">
-		Animations will follow the positioning <code>(left, right, top, bottom)</code> of the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide', position: 'left' }}>tooltip</b>.
+    <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide', position: 'left' }}>tooltip</b>"} />
 	</div>
 </main>
 

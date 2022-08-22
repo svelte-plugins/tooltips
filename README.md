@@ -42,12 +42,13 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 ### Props
 | Prop         | Description                                                         | Value                                           |
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
-| content      | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
-| arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
+| arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
+| autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
+| content      | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
 | maxWidth     | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
 | position     | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
-| autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
+| theme        | The CSS theme class name                                            | `string` (default: ``)                       |
 
 #### Using components as content
 | Prop              | Description                                                    | Value                               |
