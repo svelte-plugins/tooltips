@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import autoprefixer from 'autoprefixer'
 import scss from 'rollup-plugin-scss';
+import postcss from 'postcss';
 
 export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production'

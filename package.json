@@ -31,7 +31,7 @@
     "prepack": "husky install",
     "dev": "rollup -cw",
     "bundle": "rollup -c",
-    "deploy": "npx gh-pages -d dist",
+    "deploy": "npx gh-pages -d docs/build",
     "lint": "eslint --fix \"src/**/*.{.js,svelte}\"",
     "format": "prettier --write \"src/**/*.{js,json,svelte}\"",
     "install:docs": "yarn --cwd ./docs",
