@@ -1,0 +1,27 @@
+{
+  "rootDir": "./",
+  "verbose": true,
+  "snapshotResolver": "<rootDir>/snapshot-resolver.js",
+  "restoreMocks": true,
+  "transform": {
+    "^.+\\.test.js$": "babel-jest",
+    "^.+\\.svelte$": "jest-transform-svelte"
+  },
+  "collectCoverageFrom": [
+    "src/**/*.svelte",
+    "!<rootDir>/src/*.test.svelte"
+  ],
+  "moduleNameMapper": {
+    "^tests/(.*)$": "<rootDir>/tests/$1"
+  },
+  "modulePathIgnorePatterns": [
+    "<rootDir>/tests"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "svelte"
+  ],
+  "setupFilesAfterEnv": [
+    "@testing-library/jest-dom/extend-expect"
+  ]
+}
