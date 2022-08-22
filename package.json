@@ -28,13 +28,12 @@
     "/dist"
   ],
   "scripts": {
-    "prepack": "husky install",
+    "preinstall": "husky install",
     "dev": "rollup -cw",
     "bundle": "rollup -c",
     "deploy": "npx gh-pages -d docs/build",
     "lint": "eslint --fix \"src/**/*.{.js,svelte}\"",
     "format": "prettier --write \"src/**/*.{js,json,svelte}\"",
-    "install:docs": "yarn --cwd ./docs",
     "test": "jest --coverage"
   },
   "devDependencies": {
