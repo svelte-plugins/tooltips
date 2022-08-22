@@ -43,9 +43,9 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 | Prop         | Description                                                         | Value                                           |
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
 | content      | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
-| showArrow    | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
+| arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
-| maxWidth     | Size of the obstruction grid                                        | `number` (default: `200`)                       |
+| maxWidth     | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
 | position     | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
 | autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
 
