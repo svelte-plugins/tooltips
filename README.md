@@ -49,7 +49,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 | maxWidth     | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
 | position     | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
 | theme        | The CSS theme class name                                            | `string` (default: ``)                          |
-| styles       | The object containing theme variable overrides                      | `object` (default: `null`)                      |
+| style        | The object containing theme variable overrides                      | `object` (default: `null`)                      |
 
 #### Using components as content
 | Prop              | Description                                                    | Value                               |
@@ -69,7 +69,7 @@ Checkout out my <span use:tooltip={{ content: { component: ComponentAsTooltip, p
 ## Theming
 You can customize tooltips theme using several methods:
 - Assign a theme class name via the `theme` property that includes all of your CSS variables overrides
-- Define the overrides directly using the `styles` property
+- Define the overrides directly using the `style` property
 - Override the CSS variables globally
 
 Tooltip CSS variables:
