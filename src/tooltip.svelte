@@ -16,7 +16,7 @@
   let minWidth = 0;
   let component = null;
 
-  const opposite = {
+  const inverse = {
     left: 'right',
     right: 'left',
     top: 'bottom',
@@ -36,7 +36,7 @@
 
   const onMouseEnter = () => {
     if (autoPosition && !isInViewport()) {
-      position = opposite[position];
+      position = inverse[position];
     }
 
     tooltipRef.classList.add('show');
@@ -113,8 +113,8 @@
 
 <style>
   /*--------------------------*
-	 * Theme Variables
-	 *--------------------------*/
+   * Theme Variables
+   *--------------------------*/
 
   :root {
     --tooltip-background-color: rgba(0, 0, 0, 0.9);
@@ -134,8 +134,8 @@
   }
 
   /*--------------------------*
-	 * Tooltip Styling
-	 *--------------------------*/
+   * Tooltip Styling
+   *--------------------------*/
 
   .tooltip-container {
     position: relative;
@@ -232,8 +232,8 @@
   }
 
   /*--------------------------*
-	 * CSS Animations
-	 *--------------------------*/
+   * CSS Animations
+   *--------------------------*/
 
   /* Fade */
 

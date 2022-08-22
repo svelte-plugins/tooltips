@@ -15,7 +15,7 @@
   let minWidth = 0;
   let component = null;
 
-  const opposite = {
+  const inverse = {
     left: 'right',
     right: 'left',
     top: 'bottom',
@@ -63,7 +63,7 @@
     }
 
     if (autoPosition && !isInViewport()) {
-      position = opposite[position];
+      position = inverse[position];
     }
 
     ref.classList.add('show');
@@ -92,8 +92,8 @@
 
 <style>
   /*--------------------------*
-	 * Theme Variables
-	 *--------------------------*/
+   * Theme Variables
+   *--------------------------*/
 
   :root {
     --tooltip-background-color: rgba(0, 0, 0, 0.9);
@@ -113,8 +113,8 @@
   }
 
   /*--------------------------*
-	 * Tooltip Styling
-	 *--------------------------*/
+   * Tooltip Styling
+   *--------------------------*/
 
   .tooltip {
     background-color: var(--tooltip-background-color);
@@ -203,8 +203,8 @@
   }
 
   /*--------------------------*
-	 * CSS Animations
-	 *--------------------------*/
+   * CSS Animations
+   *--------------------------*/
 
   /* Fade */
 
