@@ -1,5 +1,5 @@
 import { render } from '@testing-library/svelte';
-import Tooltip from './tooltip.svelte';
+import Tooltip from './action-tooltip.svelte';
 
 describe('Components: Tooltip', () => {
   let TestHarness;

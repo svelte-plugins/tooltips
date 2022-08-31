@@ -15,7 +15,7 @@ export const getMinWidth = (element, maxWidth) => {
   const elementPadding = elementPaddingLeft + elementPaddingRight;
   const contentWidth = elementWidth - elementPadding;
 
-  return Math.round(Math.min(maxWidth, contentWidth));
+  return Math.round(Math.min(maxWidth, contentWidth || maxWidth));
 };
 
 export const isInViewport = (element) => {

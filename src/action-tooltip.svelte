@@ -103,6 +103,7 @@
     box-shadow: var(--tooltip-box-shadow);
     border-radius: var(--tooltip-border-radius);
     color: var(--tooltip-color);
+    opacity: 0;
     font-family: var(--tooltip-font-family);
     font-size: var(--tooltip-font-size);
     font-style: normal;
@@ -111,11 +112,14 @@
     padding: var(--tooltip-padding);
     position: absolute;
     text-align: left;
+    visibility: hidden;
     white-space: nowrap;
     z-index: var(--tooltip-z-index);
   }
 
   .tooltip.show {
+    opacity: 1;
+    visibility: visible;
     white-space: normal;
   }
 
