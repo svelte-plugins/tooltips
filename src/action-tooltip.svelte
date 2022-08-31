@@ -1,5 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { formatVariableKey, isInViewport } from './helpers';
+  import { inverse } from './constants';
 
   export let content = '';
   export let align = 'left';
@@ -15,25 +17,9 @@
   let minWidth = 0;
   let component = null;
 
-  const inverse = {
-    left: 'right',
-    right: 'left',
-    top: 'bottom',
-    bottom: 'top'
-  };
-
-  const isInViewport = () => {
-    const rect = ref.getBoundingClientRect();
-
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
-
   onMount(() => {
+    let delay = 0;
+
     if (ref !== null) {
       if (isComponent && !component) {
         component = new content.component({ target: ref, props: content.props });
@@ -50,23 +36,20 @@
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
+          const key = formatVariableKey(prop);
           const value = style[prop];
-          const key = prop
-            .replace(/-_$/g, '')
-            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-            .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
-            .toLowerCase();
 
           ref.style.setProperty(`--tooltip-${key}`, value);
         }
       }
     }
 
-    if (autoPosition && !isInViewport()) {
+    if (autoPosition && !isInViewport(ref)) {
       position = inverse[position];
+      delay = 200;
     }
 
-    ref.classList.add('show');
+    setTimeout(() => ref.classList.add('show'), delay);
   });
 
   onDestroy(() => {
@@ -116,11 +99,16 @@
    * Tooltip Styling
    *--------------------------*/
 
+  .tooltip-container {
+    position: relative;
+  }
+
   .tooltip {
     background-color: var(--tooltip-background-color);
     box-shadow: var(--tooltip-box-shadow);
     border-radius: var(--tooltip-border-radius);
     color: var(--tooltip-color);
+    opacity: 0;
     font-family: var(--tooltip-font-family);
     font-size: var(--tooltip-font-size);
     font-style: normal;
@@ -129,11 +117,14 @@
     padding: var(--tooltip-padding);
     position: absolute;
     text-align: left;
+    visibility: hidden;
     white-space: nowrap;
     z-index: var(--tooltip-z-index);
   }
 
   .tooltip.show {
+    opacity: 1;
+    visibility: visible;
     white-space: normal;
   }
 

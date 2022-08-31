@@ -1,5 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { formatVariableKey, isInViewport } from './helpers';
+  import { inverse } from './constants';
 
   export let content = '';
   export let align = 'left';
@@ -15,35 +17,22 @@
   let tooltipRef = null;
   let minWidth = 0;
   let component = null;
-
-  const inverse = {
-    left: 'right',
-    right: 'left',
-    top: 'bottom',
-    bottom: 'top'
-  };
-
-  const isInViewport = () => {
-    const rect = tooltipRef.getBoundingClientRect();
-
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
+  let originalPosition = position;
 
   const onMouseEnter = () => {
-    if (autoPosition && !isInViewport()) {
+    let delay = 0;
+
+    if (autoPosition && !isInViewport(tooltipRef)) {
       position = inverse[position];
+      delay = 200;
     }
 
-    tooltipRef.classList.add('show');
+    setTimeout(() => tooltipRef.classList.add('show'), delay);
   };
 
   const onMouseLeave = () => {
     tooltipRef.classList.remove('show');
+    position = originalPosition;
   };
 
   onMount(() => {
@@ -71,12 +60,8 @@
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
+          const key = formatVariableKey(prop);
           const value = style[prop];
-          const key = prop
-            .replace(/-_$/g, '')
-            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-            .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
-            .toLowerCase();
 
           tooltipRef.style.setProperty(`--tooltip-${key}`, value);
         }
