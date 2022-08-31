@@ -183,12 +183,12 @@
     <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'slide' }}>tooltip</b>"} />
   </div>
 	<div class="example">
-		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff', maxWidth: 140 }}>Puff</b> animation.</p>
+		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff' }}>Puff</b> animation.</p>
     <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'puff' }}>tooltip</b>"} />
   </div>
 
 	<div class="example">
-		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce', maxWidth: 140 }}>Bounce</b> animation.</p>
+		<p>This tooltip uses the <b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce' }}>Bounce</b> animation.</p>
     <Prism code={"<b use:tooltip={{ content: 'Just another tooltip.', animation: 'bounce' }}>tooltip</b>"} />
 	</div>
 

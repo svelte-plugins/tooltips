@@ -1,5 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { inverse } from './constants';
 
   export let content = '';
   export let align = 'left';
@@ -14,59 +16,38 @@
   let ref = null;
   let minWidth = 0;
   let component = null;
-
-  const inverse = {
-    left: 'right',
-    right: 'left',
-    top: 'bottom',
-    bottom: 'top'
-  };
-
-  const isInViewport = () => {
-    const rect = ref.getBoundingClientRect();
-
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
+  let animationEffect = null;
+  let show = false;
 
   onMount(() => {
+    const delay = animation ? 200 : 0;
+
     if (ref !== null) {
       if (isComponent && !component) {
         component = new content.component({ target: ref, props: content.props });
       }
 
-      const elementWidth = ref.getBoundingClientRect().width;
-      const elementStyle = window.getComputedStyle(ref);
-      const elementPaddingLeft = parseInt(elementStyle.getPropertyValue('padding-left'), 10);
-      const elementPaddingRight = parseInt(elementStyle.getPropertyValue('padding-right'), 10);
-      const elementPadding = elementPaddingLeft + elementPaddingRight;
-      const contentWidth = elementWidth - elementPadding;
-
-      minWidth = Math.round(Math.min(maxWidth, contentWidth));
+      minWidth = getMinWidth(ref, maxWidth);
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
+          const key = formatVariableKey(prop);
           const value = style[prop];
-          const key = prop
-            .replace(/-_$/g, '')
-            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-            .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
-            .toLowerCase();
 
           ref.style.setProperty(`--tooltip-${key}`, value);
         }
       }
     }
 
-    if (autoPosition && !isInViewport()) {
+    if (autoPosition && !isInViewport(ref)) {
       position = inverse[position];
     }
 
-    ref.classList.add('show');
+    if (animation) {
+      animationEffect = animation;
+    }
+
+    setTimeout(() => (show = true), delay);
   });
 
   onDestroy(() => {
@@ -81,7 +62,8 @@
 
 <div
   bind:this={ref}
-  class="tooltip animation-{animation} {position} {theme}"
+  class="tooltip animation-{animationEffect} {position} {theme}"
+  class:show
   class:arrowless={!arrow}
   style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
 >
@@ -121,6 +103,7 @@
     box-shadow: var(--tooltip-box-shadow);
     border-radius: var(--tooltip-border-radius);
     color: var(--tooltip-color);
+    opacity: 0;
     font-family: var(--tooltip-font-family);
     font-size: var(--tooltip-font-size);
     font-style: normal;
@@ -129,11 +112,14 @@
     padding: var(--tooltip-padding);
     position: absolute;
     text-align: left;
+    visibility: hidden;
     white-space: nowrap;
     z-index: var(--tooltip-z-index);
   }
 
   .tooltip.show {
+    opacity: 1;
+    visibility: visible;
     white-space: normal;
   }
 
@@ -210,7 +196,7 @@
 
   .tooltip.animation-fade {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out;
   }
 
   .tooltip.animation-fade.show {
@@ -222,7 +208,7 @@
   .tooltip.top.animation-slide {
     margin-top: 10px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.top.animation-slide.show {
@@ -233,7 +219,7 @@
   .tooltip.bottom.animation-slide {
     margin-bottom: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.bottom.animation-slide.show {
@@ -244,7 +230,7 @@
   .tooltip.right.animation-slide {
     margin-right: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.right.animation-slide.show {
@@ -255,7 +241,7 @@
   .tooltip.left.animation-slide {
     margin-left: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.left.animation-slide.show {
@@ -270,7 +256,7 @@
     opacity: 0;
     transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.left.animation-puff.show {
@@ -284,7 +270,7 @@
     opacity: 0;
     transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.right.animation-puff.show {
@@ -298,7 +284,7 @@
     opacity: 0;
     transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.top.animation-puff.show {
@@ -312,7 +298,7 @@
     opacity: 0;
     transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.bottom.animation-puff.show {
@@ -327,7 +313,7 @@
     opacity: 0;
     transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.left.animation-bounce.show {
@@ -339,7 +325,7 @@
     opacity: 0;
     transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.right.animation-bounce.show {
@@ -351,7 +337,7 @@
     opacity: 0;
     transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.top.animation-bounce.show {
@@ -363,7 +349,7 @@
     opacity: 0;
     transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.bottom.animation-bounce.show {

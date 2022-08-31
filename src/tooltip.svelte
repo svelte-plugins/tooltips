@@ -1,5 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { inverse } from './constants';
 
   export let content = '';
   export let align = 'left';
@@ -15,35 +17,34 @@
   let tooltipRef = null;
   let minWidth = 0;
   let component = null;
-
-  const inverse = {
-    left: 'right',
-    right: 'left',
-    top: 'bottom',
-    bottom: 'top'
-  };
-
-  const isInViewport = () => {
-    const rect = tooltipRef.getBoundingClientRect();
-
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  };
+  let initialPosition = position;
+  let animationEffect = null;
+  let show = false;
+  let timer = null;
 
   const onMouseEnter = () => {
-    if (autoPosition && !isInViewport()) {
+    const delay = animation ? 200 : 0;
+
+    if (autoPosition && !isInViewport(tooltipRef)) {
       position = inverse[position];
     }
 
-    tooltipRef.classList.add('show');
+    if (animation) {
+      animationEffect = animation;
+    }
+
+    timer = setTimeout(() => (show = true), delay);
   };
 
   const onMouseLeave = () => {
-    tooltipRef.classList.remove('show');
+    show = false;
+    position = initialPosition;
+    animationEffect = null;
+
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
   };
 
   onMount(() => {
@@ -60,23 +61,12 @@
         });
       }
 
-      const elementWidth = tooltipRef.getBoundingClientRect().width;
-      const elementStyle = window.getComputedStyle(tooltipRef);
-      const elementPaddingLeft = parseInt(elementStyle.getPropertyValue('padding-left'), 10);
-      const elementPaddingRight = parseInt(elementStyle.getPropertyValue('padding-right'), 10);
-      const elementPadding = elementPaddingLeft + elementPaddingRight;
-      const contentWidth = elementWidth - elementPadding;
-
-      minWidth = Math.round(Math.min(maxWidth, contentWidth));
+      minWidth = getMinWidth(tooltipRef, maxWidth);
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
+          const key = formatVariableKey(prop);
           const value = style[prop];
-          const key = prop
-            .replace(/-_$/g, '')
-            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-            .replace(/([A-Z])([A-Z])(?=[a-z])/g, '$1-$2')
-            .toLowerCase();
 
           tooltipRef.style.setProperty(`--tooltip-${key}`, value);
         }
@@ -101,8 +91,9 @@
   <slot />
   <div
     bind:this={tooltipRef}
-    class="tooltip animation-{animation} {position} {theme}"
+    class="tooltip animation-{animationEffect} {position} {theme}"
     class:arrowless={!arrow}
+    class:show
     style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
   >
     {#if !isComponent}
@@ -239,7 +230,7 @@
 
   .tooltip.animation-fade {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out;
   }
 
   .tooltip.animation-fade.show {
@@ -251,7 +242,7 @@
   .tooltip.top.animation-slide {
     margin-top: 10px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.top.animation-slide.show {
@@ -262,7 +253,7 @@
   .tooltip.bottom.animation-slide {
     margin-bottom: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.bottom.animation-slide.show {
@@ -273,7 +264,7 @@
   .tooltip.right.animation-slide {
     margin-right: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.right.animation-slide.show {
@@ -284,7 +275,7 @@
   .tooltip.left.animation-slide {
     margin-left: 20px;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out, margin 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
   }
 
   .tooltip.left.animation-slide.show {
@@ -299,7 +290,7 @@
     opacity: 0;
     transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.left.animation-puff.show {
@@ -313,7 +304,7 @@
     opacity: 0;
     transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.right.animation-puff.show {
@@ -327,7 +318,7 @@
     opacity: 0;
     transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.top.animation-puff.show {
@@ -341,7 +332,7 @@
     opacity: 0;
     transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(2, 2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
 
   .tooltip.bottom.animation-puff.show {
@@ -356,7 +347,7 @@
     opacity: 0;
     transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.left.animation-bounce.show {
@@ -368,7 +359,7 @@
     opacity: 0;
     transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.right.animation-bounce.show {
@@ -380,7 +371,7 @@
     opacity: 0;
     transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.top.animation-bounce.show {
@@ -392,7 +383,7 @@
     opacity: 0;
     transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(1.2, 1.2);
     transform-origin: 50% 50%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s cubic-bezier(0.5, -1, 0.5, 3);
+    transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.bottom.animation-bounce.show {
