@@ -1,6 +1,6 @@
 {
   "name": "@svelte-plugins/tooltips",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "description": "A simple tooltip action and component designed for Svelte.",
   "author": "Kieran Boyle (https://github.com/dysfunc)",
@@ -28,7 +28,6 @@
     "/dist"
   ],
   "scripts": {
-    "preinstall": "husky install",
     "dev": "rollup -cw",
     "bundle": "rollup -c",
     "deploy": "npx gh-pages -d docs/build",
