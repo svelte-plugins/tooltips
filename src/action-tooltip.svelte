@@ -136,10 +136,25 @@
     border: 0 !important;
   }
 
+  .tooltip.bottom,
+  .tooltip.top {
+    --tooltip-offset-x: 0px;
+    --tooltip-offset-y: 12px;
+  }
+
+  .tooltip.left,
+  .tooltip.right {
+    --tooltip-offset-x: 12px;
+    --tooltip-offset-y: 0px;
+  }
+
   .tooltip.bottom {
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, calc(100% + var(--tooltip-offset-y)));
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(100% + var(--tooltip-offset-y))
+    );
   }
 
   .tooltip.bottom:after {
@@ -152,7 +167,10 @@
   .tooltip.top {
     left: 50%;
     top: 0;
-    transform: translate(-50%, calc(-100% - var(--tooltip-offset-y)));
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(-100% - var(--tooltip-offset-y))
+    );
   }
 
   .tooltip.top:after {
@@ -165,7 +183,10 @@
   .tooltip.left {
     left: 0;
     top: 50%;
-    transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%);
+    transform: translate(
+      calc(-100% - var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    );
   }
 
   .tooltip.left:after {
@@ -178,7 +199,10 @@
   .tooltip.right {
     right: 0;
     top: 50%;
-    transform: translate(calc(100% + var(--tooltip-offset-x)), -50%);
+    transform: translate(
+      calc(100% + var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    );
   }
 
   .tooltip.right:after {
@@ -254,7 +278,10 @@
   .tooltip.left.animation-puff {
     filter: blur(2px);
     opacity: 0;
-    transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(2, 2);
+    transform: translate(
+      calc(-100% - var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    ) scale(2, 2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
@@ -262,13 +289,19 @@
   .tooltip.left.animation-puff.show {
     filter: blur(0);
     opacity: 1;
-    transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(1, 1);
+    transform: translate(
+      calc(-100% - var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.right.animation-puff {
     filter: blur(2px);
     opacity: 0;
-    transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(2, 2);
+    transform: translate(
+      calc(100% + var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    ) scale(2, 2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
@@ -276,13 +309,19 @@
   .tooltip.right.animation-puff.show {
     filter: blur(0);
     opacity: 1;
-    transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(1, 1);
+    transform: translate(
+      calc(100% + var(--tooltip-offset-x)),
+      calc(-50% - var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.top.animation-puff {
     filter: blur(2px);
     opacity: 0;
-    transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(2, 2);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(-100% - var(--tooltip-offset-y))
+    ) scale(2, 2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
@@ -290,13 +329,19 @@
   .tooltip.top.animation-puff.show {
     filter: blur(0);
     opacity: 1;
-    transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(1, 1);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(-100% - var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.bottom.animation-puff {
     filter: blur(2px);
     opacity: 0;
-    transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(2, 2);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(100% + var(--tooltip-offset-y))
+    ) scale(2, 2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, filter 0.25s ease-in-out, transform 0.25s ease-in-out;
   }
@@ -304,56 +349,80 @@
   .tooltip.bottom.animation-puff.show {
     filter: blur(0);
     opacity: 1;
-    transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(1, 1);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(100% + var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   /* Bounce */
 
   .tooltip.left.animation-bounce {
     opacity: 0;
-    transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
+    transform: translate(
+      calc(-100% - var(--tooltip-offset-x)),
+      calc(-50% + var(--tooltip-offset-y))
+    ) scale(1.2, 1.2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.left.animation-bounce.show {
     opacity: 1;
-    transform: translate(calc(-100% - var(--tooltip-offset-x)), -50%) scale(1, 1);
+    transform: translate(
+      calc(-100% - var(--tooltip-offset-x)),
+      calc(-50% + var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.right.animation-bounce {
     opacity: 0;
-    transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(1.2, 1.2);
+    transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% + var(--tooltip-offset-y))) scale(1.2, 1.2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.right.animation-bounce.show {
     opacity: 1;
-    transform: translate(calc(100% + var(--tooltip-offset-x)), -50%) scale(1, 1);
+    transform: translate(
+      calc(100% + var(--tooltip-offset-x)),
+      calc(-50% + var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.top.animation-bounce {
     opacity: 0;
-    transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(1.2, 1.2);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(-100% - var(--tooltip-offset-y))
+    ) scale(1.2, 1.2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.top.animation-bounce.show {
     opacity: 1;
-    transform: translate(-50%, calc(-100% - var(--tooltip-offset-y))) scale(1, 1);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(-100% - var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 
   .tooltip.bottom.animation-bounce {
     opacity: 0;
-    transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(1.2, 1.2);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(100% + var(--tooltip-offset-y))
+    ) scale(1.2, 1.2);
     transform-origin: 50% 50%;
     transition: opacity 0.25s ease-in-out, transform 0.25s cubic-bezier(0.5, -1, 0.5, 3);
   }
 
   .tooltip.bottom.animation-bounce.show {
     opacity: 1;
-    transform: translate(-50%, calc(100% + var(--tooltip-offset-y))) scale(1, 1);
+    transform: translate(
+      calc(-50% + var(--tooltip-offset-x)),
+      calc(100% + var(--tooltip-offset-y))
+    ) scale(1, 1);
   }
 </style>
