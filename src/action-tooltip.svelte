@@ -57,20 +57,23 @@
     }
   });
 
+  $: isEmpty = content.length === 0;
   $: isComponent = typeof content === 'object';
 </script>
 
-<div
-  bind:this={ref}
-  class="tooltip animation-{animationEffect} {position} {theme}"
-  class:show
-  class:arrowless={!arrow}
-  style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
->
-  {#if !isComponent}
-    {@html content}
-  {/if}
-</div>
+{#if !isEmpty}
+  <div
+    bind:this={ref}
+    class="tooltip animation-{animationEffect} {position} {theme}"
+    class:show
+    class:arrowless={!arrow}
+    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
+  >
+    {#if !isComponent}
+      {@html content}
+    {/if}
+  </div>
+{/if}
 
 <style>
   /*--------------------------*
