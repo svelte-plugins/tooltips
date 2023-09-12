@@ -660,7 +660,7 @@ pre[class*=language-] {
   --tooltip-z-index: 100
 }
 
-.tooltip.svelte-1b37eoe {
+.tooltip {
   background-color: var(--tooltip-background-color);
   box-shadow: var(--tooltip-box-shadow);
   border-radius: var(--tooltip-border-radius);
@@ -679,143 +679,143 @@ pre[class*=language-] {
   z-index: var(--tooltip-z-index)
 }
 
-.tooltip.show.svelte-1b37eoe {
+.tooltip.show {
   opacity: 1;
   visibility: visible;
   white-space: var(--tooltip-white-space-shown)
 }
 
-.tooltip.bottom.svelte-1b37eoe:after,
-.tooltip.left.svelte-1b37eoe:after,
-.tooltip.right.svelte-1b37eoe:after,
-.tooltip.top.svelte-1b37eoe:after {
+.tooltip.bottom:after,
+.tooltip.left:after,
+.tooltip.right:after,
+.tooltip.top:after {
   border: var(--tooltip-arrow-size) solid var(--tooltip-background-color);
   content: " ";
   position: absolute
 }
 
-.tooltip.arrowless.svelte-1b37eoe:after {
+.tooltip.arrowless:after {
   border: 0 !important
 }
 
-.tooltip.bottom.svelte-1b37eoe,
-.tooltip.top.svelte-1b37eoe {
+.tooltip.bottom,
+.tooltip.top {
   --tooltip-offset-x: 0px;
   --tooltip-offset-y: 12px
 }
 
-.tooltip.left.svelte-1b37eoe,
-.tooltip.right.svelte-1b37eoe {
+.tooltip.left,
+.tooltip.right {
   --tooltip-offset-x: 12px;
   --tooltip-offset-y: 0px
 }
 
-.tooltip.bottom.svelte-1b37eoe {
+.tooltip.bottom {
   bottom: 0;
   left: 50%;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(100% + var(--tooltip-offset-y)))
 }
 
-.tooltip.bottom.svelte-1b37eoe:after {
+.tooltip.bottom:after {
   border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--tooltip-background-color);
   left: 50%;
   top: 0;
   transform: translate(-50%, -99%)
 }
 
-.tooltip.top.svelte-1b37eoe {
+.tooltip.top {
   left: 50%;
   top: 0;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(-100% - var(--tooltip-offset-y)))
 }
 
-.tooltip.top.svelte-1b37eoe:after {
+.tooltip.top:after {
   border-color: var(--tooltip-background-color) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 99%)
 }
 
-.tooltip.left.svelte-1b37eoe {
+.tooltip.left {
   left: 0;
   top: 50%;
   transform: translate(calc(-100% - var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y)))
 }
 
-.tooltip.left.svelte-1b37eoe:after {
+.tooltip.left:after {
   border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--tooltip-background-color);
   right: 0;
   top: 50%;
   transform: translate(99%, -50%)
 }
 
-.tooltip.right.svelte-1b37eoe {
+.tooltip.right {
   right: 0;
   top: 50%;
   transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y)))
 }
 
-.tooltip.right.svelte-1b37eoe:after {
+.tooltip.right:after {
   border-color: rgba(0, 0, 0, 0) var(--tooltip-background-color) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
   left: 0;
   top: 50%;
   transform: translate(-99%, -50%)
 }
 
-.tooltip.animation-fade.svelte-1b37eoe {
+.tooltip.animation-fade {
   opacity: 0;
   transition: opacity .25s ease-in-out
 }
 
-.tooltip.animation-fade.show.svelte-1b37eoe {
+.tooltip.animation-fade.show {
   opacity: 1
 }
 
-.tooltip.top.animation-slide.svelte-1b37eoe {
+.tooltip.top.animation-slide {
   margin-top: 10px;
   opacity: 0;
   transition: opacity .25s ease-in-out, margin .25s ease-in-out
 }
 
-.tooltip.top.animation-slide.show.svelte-1b37eoe {
+.tooltip.top.animation-slide.show {
   margin-top: 0;
   opacity: 1
 }
 
-.tooltip.bottom.animation-slide.svelte-1b37eoe {
+.tooltip.bottom.animation-slide {
   margin-bottom: 20px;
   opacity: 0;
   transition: opacity .25s ease-in-out, margin .25s ease-in-out
 }
 
-.tooltip.bottom.animation-slide.show.svelte-1b37eoe {
+.tooltip.bottom.animation-slide.show {
   margin-bottom: 0;
   opacity: 1
 }
 
-.tooltip.right.animation-slide.svelte-1b37eoe {
+.tooltip.right.animation-slide {
   margin-right: 20px;
   opacity: 0;
   transition: opacity .25s ease-in-out, margin .25s ease-in-out
 }
 
-.tooltip.right.animation-slide.show.svelte-1b37eoe {
+.tooltip.right.animation-slide.show {
   margin-right: 0;
   opacity: 1
 }
 
-.tooltip.left.animation-slide.svelte-1b37eoe {
+.tooltip.left.animation-slide {
   margin-left: 20px;
   opacity: 0;
   transition: opacity .25s ease-in-out, margin .25s ease-in-out
 }
 
-.tooltip.left.animation-slide.show.svelte-1b37eoe {
+.tooltip.left.animation-slide.show {
   margin-left: 0;
   opacity: 1
 }
 
-.tooltip.left.animation-puff.svelte-1b37eoe {
+.tooltip.left.animation-puff {
   filter: blur(2px);
   opacity: 0;
   transform: translate(calc(-100% - var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y))) scale(2, 2);
@@ -823,13 +823,13 @@ pre[class*=language-] {
   transition: opacity .25s ease-in-out, filter .25s ease-in-out, transform .25s ease-in-out
 }
 
-.tooltip.left.animation-puff.show.svelte-1b37eoe {
+.tooltip.left.animation-puff.show {
   filter: blur(0);
   opacity: 1;
   transform: translate(calc(-100% - var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.right.animation-puff.svelte-1b37eoe {
+.tooltip.right.animation-puff {
   filter: blur(2px);
   opacity: 0;
   transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y))) scale(2, 2);
@@ -837,13 +837,13 @@ pre[class*=language-] {
   transition: opacity .25s ease-in-out, filter .25s ease-in-out, transform .25s ease-in-out
 }
 
-.tooltip.right.animation-puff.show.svelte-1b37eoe {
+.tooltip.right.animation-puff.show {
   filter: blur(0);
   opacity: 1;
   transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% - var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.top.animation-puff.svelte-1b37eoe {
+.tooltip.top.animation-puff {
   filter: blur(2px);
   opacity: 0;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(-100% - var(--tooltip-offset-y))) scale(2, 2);
@@ -851,13 +851,13 @@ pre[class*=language-] {
   transition: opacity .25s ease-in-out, filter .25s ease-in-out, transform .25s ease-in-out
 }
 
-.tooltip.top.animation-puff.show.svelte-1b37eoe {
+.tooltip.top.animation-puff.show {
   filter: blur(0);
   opacity: 1;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(-100% - var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.bottom.animation-puff.svelte-1b37eoe {
+.tooltip.bottom.animation-puff {
   filter: blur(2px);
   opacity: 0;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(100% + var(--tooltip-offset-y))) scale(2, 2);
@@ -865,56 +865,56 @@ pre[class*=language-] {
   transition: opacity .25s ease-in-out, filter .25s ease-in-out, transform .25s ease-in-out
 }
 
-.tooltip.bottom.animation-puff.show.svelte-1b37eoe {
+.tooltip.bottom.animation-puff.show {
   filter: blur(0);
   opacity: 1;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(100% + var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.left.animation-bounce.svelte-1b37eoe {
+.tooltip.left.animation-bounce {
   opacity: 0;
   transform: translate(calc(-100% - var(--tooltip-offset-x)), calc(-50% + var(--tooltip-offset-y))) scale(1.2, 1.2);
   transform-origin: 50% 50%;
   transition: opacity .25s ease-in-out, transform .25s cubic-bezier(0.5, -1, 0.5, 3)
 }
 
-.tooltip.left.animation-bounce.show.svelte-1b37eoe {
+.tooltip.left.animation-bounce.show {
   opacity: 1;
   transform: translate(calc(-100% - var(--tooltip-offset-x)), calc(-50% + var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.right.animation-bounce.svelte-1b37eoe {
+.tooltip.right.animation-bounce {
   opacity: 0;
   transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% + var(--tooltip-offset-y))) scale(1.2, 1.2);
   transform-origin: 50% 50%;
   transition: opacity .25s ease-in-out, transform .25s cubic-bezier(0.5, -1, 0.5, 3)
 }
 
-.tooltip.right.animation-bounce.show.svelte-1b37eoe {
+.tooltip.right.animation-bounce.show {
   opacity: 1;
   transform: translate(calc(100% + var(--tooltip-offset-x)), calc(-50% + var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.top.animation-bounce.svelte-1b37eoe {
+.tooltip.top.animation-bounce {
   opacity: 0;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(-100% - var(--tooltip-offset-y))) scale(1.2, 1.2);
   transform-origin: 50% 50%;
   transition: opacity .25s ease-in-out, transform .25s cubic-bezier(0.5, -1, 0.5, 3)
 }
 
-.tooltip.top.animation-bounce.show.svelte-1b37eoe {
+.tooltip.top.animation-bounce.show {
   opacity: 1;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(-100% - var(--tooltip-offset-y))) scale(1, 1)
 }
 
-.tooltip.bottom.animation-bounce.svelte-1b37eoe {
+.tooltip.bottom.animation-bounce {
   opacity: 0;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(100% + var(--tooltip-offset-y))) scale(1.2, 1.2);
   transform-origin: 50% 50%;
   transition: opacity .25s ease-in-out, transform .25s cubic-bezier(0.5, -1, 0.5, 3)
 }
 
-.tooltip.bottom.animation-bounce.show.svelte-1b37eoe {
+.tooltip.bottom.animation-bounce.show {
   opacity: 1;
   transform: translate(calc(-50% + var(--tooltip-offset-x)), calc(100% + var(--tooltip-offset-y))) scale(1, 1)
 }
