@@ -1,31 +1,61 @@
 <script>
+  // @ts-check
+
   import { onMount, onDestroy } from 'svelte';
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  export let action = 'hover';
   export let content = '';
   export let align = 'left';
   export let position = 'top';
   export let maxWidth = 200;
+  /**
+   * @type {{ [x: string]: any; } | null}
+   */
   export let style = null;
   export let theme = '';
   export let animation = '';
   export let arrow = true;
   export let autoPosition = false;
 
+  /**
+   * @type {HTMLSpanElement | null}
+   */
   let containerRef = null;
+  /**
+   * @type {HTMLDivElement | null}
+   */
   let tooltipRef = null;
   let minWidth = 0;
+  /**
+   * @type {{ $destroy: () => void; } | null}
+   */
   let component = null;
   let initialPosition = position;
+  /**
+   * @type {string | null}
+   */
   let animationEffect = null;
   let show = false;
+  /**
+   * @type {number | null | undefined}
+   */
   let timer = null;
+
+  const onClick = () => {
+    if (show) {
+      onMouseLeave();
+    } else {
+      onMouseEnter();
+    }
+  };
 
   const onMouseEnter = () => {
     const delay = animation ? 200 : 0;
 
     if (autoPosition && !isInViewport(tooltipRef)) {
+      // @ts-ignore
       position = inverse[position];
     }
 
@@ -47,16 +77,38 @@
     }
   };
 
-  onMount(() => {
+  const addListeners = () => {
     if (containerRef !== null) {
-      containerRef.addEventListener('mouseenter', onMouseEnter);
-      containerRef.addEventListener('mouseleave', onMouseLeave);
+      removeListeners();
+
+      if (action === 'click') {
+        containerRef.addEventListener('click', onClick);
+      }
+
+      if (action === 'hover') {
+        containerRef.addEventListener('mouseenter', onMouseEnter);
+        containerRef.addEventListener('mouseleave', onMouseLeave);
+      }
     }
+  }
+
+  const removeListeners = () => {
+    if (containerRef !== null) {
+      containerRef.removeEventListener('click', onClick);
+      containerRef.removeEventListener('mouseenter', onMouseEnter);
+      containerRef.removeEventListener('mouseleave', onMouseLeave);
+    }
+  };
+
+  onMount(() => {
+    addListeners();
 
     if (tooltipRef !== null) {
       if (isComponent && !component) {
+        // @ts-ignore
         component = new content.component({
           target: tooltipRef,
+          // @ts-ignore
           props: content.props
         });
       }
@@ -80,29 +132,31 @@
       component = null;
     }
 
-    if (containerRef !== null) {
-      containerRef.removeEventListener('mouseenter', onMouseEnter);
-      containerRef.removeEventListener('mouseleave', onMouseLeave);
-    }
+    removeListeners();
   });
 
   $: isComponent = typeof content === 'object';
+  $: action, addListeners();
 </script>
 
-<span bind:this={containerRef} class="tooltip-container">
+{#if content}
+  <span bind:this={containerRef} class="tooltip-container">
+    <slot />
+      <div
+        bind:this={tooltipRef}
+        class="tooltip animation-{animationEffect} {position} {theme}"
+        class:arrowless={!arrow}
+        class:show
+        style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
+      >
+        {#if !isComponent}
+          {@html content}
+        {/if}
+      </div>
+    </span>
+{:else}
   <slot />
-  <div
-    bind:this={tooltipRef}
-    class="tooltip animation-{animationEffect} {position} {theme}"
-    class:arrowless={!arrow}
-    class:show
-    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-  >
-    {#if !isComponent}
-      {@html content}
-    {/if}
-  </div>
-</span>
+{/if}
 
 <style>
   /*--------------------------*
@@ -110,6 +164,7 @@
    *--------------------------*/
 
   :root {
+    --tooltip-arrow-size: 10px;
     --tooltip-background-color: rgba(0, 0, 0, 0.9);
     --tooltip-border-radius: 4px;
     --tooltip-box-shadow: 0 1px 20px rgba(0, 0, 0, 0.25);
@@ -122,8 +177,9 @@
     --tooltip-offset-x: 0px;
     --tooltip-offset-y: 0px;
     --tooltip-padding: 12px;
+    --tooltip-white-space-hidden: nowrap;
+    --tooltip-white-space-shown: normal;
     --tooltip-z-index: 100;
-    --tooltip-arrow-size: 10px;
   }
 
   /*--------------------------*
@@ -149,14 +205,14 @@
     position: absolute;
     text-align: left;
     visibility: hidden;
-    white-space: nowrap;
+    white-space: var(--tooltip-white-space-hidden);
     z-index: var(--tooltip-z-index);
   }
 
   .tooltip.show {
     opacity: 1;
     visibility: visible;
-    white-space: normal;
+    white-space: var(--tooltip-white-space-shown);
   }
 
   .tooltip.bottom:after,

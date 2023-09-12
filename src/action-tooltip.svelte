@@ -3,6 +3,7 @@
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  export let action = 'hover';
   export let content = '';
   export let align = 'left';
   export let position = 'top';
@@ -24,7 +25,7 @@
 
     if (ref !== null) {
       if (isComponent && !component) {
-        component = new content.component({ target: ref, props: content.props });
+        component = new content.component({ target: ref, props: { action, ...content.props } });
       }
 
       minWidth = getMinWidth(ref, maxWidth);
@@ -78,6 +79,7 @@
    *--------------------------*/
 
   :root {
+    --tooltip-arrow-size: 10px;
     --tooltip-background-color: rgba(0, 0, 0, 0.9);
     --tooltip-border-radius: 4px;
     --tooltip-box-shadow: 0 1px 20px rgba(0, 0, 0, 0.25);
@@ -90,8 +92,9 @@
     --tooltip-offset-x: 12px;
     --tooltip-offset-y: 12px;
     --tooltip-padding: 12px;
+    --tooltip-white-space-hidden: nowrap;
+    --tooltip-white-space-shown: normal;
     --tooltip-z-index: 100;
-    --tooltip-arrow-size: 10px;
   }
 
   /*--------------------------*
@@ -113,14 +116,14 @@
     position: absolute;
     text-align: left;
     visibility: hidden;
-    white-space: nowrap;
+    white-space: var(--tooltip-white-space-hidden);
     z-index: var(--tooltip-z-index);
   }
 
   .tooltip.show {
     opacity: 1;
     visibility: visible;
-    white-space: normal;
+    white-space: var(--tooltip-white-space-shown);
   }
 
   .tooltip.bottom:after,

@@ -42,6 +42,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 ### Props
 | Prop         | Description                                                         | Value                                           |
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
+| action       | The action that triggers the tooltip (hover | click)                | `string` (default: `hover`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
 | arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
@@ -75,6 +76,7 @@ You can customize tooltips theme using several methods:
 Tooltip CSS variables:
 
 ```css
+--tooltip-arrow-size: 10px;
 --tooltip-background-color: rgba(0, 0, 0, 0.9);
 --tooltip-border-radius: 4px;
 --tooltip-box-shadow: 0 1px 20px rgba(0, 0, 0, 0.25);
@@ -87,8 +89,9 @@ Tooltip CSS variables:
 --tooltip-offset-x: 12px;
 --tooltip-offset-y: 12px;
 --tooltip-padding: 12px;
+--tooltip-white-space-hidden: nowrap;
+--tooltip-white-space-shown: normal;
 --tooltip-z-index: 100;
---tooltip-arrow-size: 10px;
 ```
 
 ### Using the theme property
