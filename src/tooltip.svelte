@@ -1,4 +1,6 @@
 <script>
+  // @ts-check
+
   import { onMount, onDestroy } from 'svelte';
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
@@ -7,25 +9,44 @@
   export let align = 'left';
   export let position = 'top';
   export let maxWidth = 200;
-  export let style = null;
+  /**
+   * @type {{ [x: string]: any; } | null}
+   */
+   export let style = null;
   export let theme = '';
   export let animation = '';
   export let arrow = true;
   export let autoPosition = false;
 
+  /**
+   * @type {HTMLSpanElement | null}
+   */
   let containerRef = null;
+  /**
+   * @type {HTMLDivElement | null}
+   */
   let tooltipRef = null;
   let minWidth = 0;
+  /**
+   * @type {{ $destroy: () => void; } | null}
+   */
   let component = null;
   let initialPosition = position;
+  /**
+   * @type {string | null}
+   */
   let animationEffect = null;
   let show = false;
+  /**
+   * @type {number | null | undefined}
+   */
   let timer = null;
 
   const onMouseEnter = () => {
     const delay = animation ? 200 : 0;
 
     if (autoPosition && !isInViewport(tooltipRef)) {
+      // @ts-ignore
       position = inverse[position];
     }
 
@@ -55,8 +76,10 @@
 
     if (tooltipRef !== null) {
       if (isComponent && !component) {
+        // @ts-ignore
         component = new content.component({
           target: tooltipRef,
+          // @ts-ignore
           props: content.props
         });
       }
