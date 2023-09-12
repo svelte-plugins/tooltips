@@ -83,7 +83,7 @@
 	</div>
 
 	<div class="example">
-		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" action="click" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when clicked.
+		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when I hover.
 	</div>
 
 	<div class="example">
@@ -94,7 +94,7 @@
         position="right"
         action="click"
         theme="tooltip-theme">
-        <b>right</b>.
+        <b>right</b> when clicked.
       </Tooltip>
     </p>
     <Prism showLineNumbers={true} code={`
