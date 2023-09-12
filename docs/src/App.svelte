@@ -83,7 +83,7 @@
 	</div>
 
 	<div class="example">
-		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when I hover.
+		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when you hover.
 	</div>
 
 	<div class="example">

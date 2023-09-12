@@ -1,4 +1,6 @@
 <script>
+  // @ts-check
+
   import { onMount, onDestroy } from 'svelte';
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
@@ -8,15 +10,27 @@
   export let align = 'left';
   export let position = 'top';
   export let maxWidth = 200;
-  export let style = null;
+  /**
+   * @type {{ [x: string]: any; } | null}
+   */
+   export let style = null;
   export let theme = '';
   export let animation = '';
   export let arrow = true;
   export let autoPosition = false;
 
+  /**
+   * @type {HTMLDivElement | null}
+   */
   let ref = null;
   let minWidth = 0;
+  /**
+   * @type {{ $destroy: () => void; } | null}
+   */
   let component = null;
+  /**
+   * @type {string | null}
+   */
   let animationEffect = null;
   let show = false;
 
@@ -25,6 +39,7 @@
 
     if (ref !== null) {
       if (isComponent && !component) {
+        // @ts-ignore
         component = new content.component({ target: ref, props: { action, ...content.props } });
       }
 
@@ -41,6 +56,7 @@
     }
 
     if (autoPosition && !isInViewport(ref)) {
+      // @ts-ignore
       position = inverse[position];
     }
 
@@ -61,17 +77,19 @@
   $: isComponent = typeof content === 'object';
 </script>
 
-<div
-  bind:this={ref}
-  class="tooltip animation-{animationEffect} {position} {theme}"
-  class:show
-  class:arrowless={!arrow}
-  style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
->
-  {#if !isComponent}
-    {@html content}
-  {/if}
-</div>
+{#if content}
+  <div
+    bind:this={ref}
+    class="tooltip animation-{animationEffect} {position} {theme}"
+    class:show
+    class:arrowless={!arrow}
+    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
+  >
+    {#if !isComponent}
+      {@html content}
+    {/if}
+  </div>
+{/if}
 
 <style>
   /*--------------------------*
