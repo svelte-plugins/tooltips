@@ -89,20 +89,24 @@
   $: isComponent = typeof content === 'object';
 </script>
 
-<span bind:this={containerRef} class="tooltip-container">
+{#if content}
+  <span bind:this={containerRef} class="tooltip-container">
+    <slot />
+      <div
+        bind:this={tooltipRef}
+        class="tooltip animation-{animationEffect} {position} {theme}"
+        class:arrowless={!arrow}
+        class:show
+        style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
+      >
+        {#if !isComponent}
+          {@html content}
+        {/if}
+      </div>
+    </span>
+{:else}
   <slot />
-  <div
-    bind:this={tooltipRef}
-    class="tooltip animation-{animationEffect} {position} {theme}"
-    class:arrowless={!arrow}
-    class:show
-    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-  >
-    {#if !isComponent}
-      {@html content}
-    {/if}
-  </div>
-</span>
+{/if}
 
 <style>
   /*--------------------------*
