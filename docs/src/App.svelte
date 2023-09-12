@@ -12,12 +12,12 @@
 
 	<hr />
 
-	<h2>Examples using action</h2>
+ 	<h2>Examples using action</h2>
 
 	<div class="example">
-		<p>This tooltip should appear on the <u title="hello world!" use:tooltip>top</u> and use the content in the <code>title</code> attribute.</p>
+		<p>This tooltip should appear on the <u title="hello world!" action="click"  use:tooltip>top</u> when clicked. The content for the tooltip is provided by the <code>title</code> attribute.</p>
 
-    <Prism code={'<u title="hello world!" use:tooltip>top</u>'} />
+    <Prism code={'<u title="hello world!" action="click" use:tooltip>top</u>'} />
   </div>
 
 	<div class="example">
@@ -27,9 +27,9 @@
   </div>
 
 	<div class="example">
-		<p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', theme: 'tooltip-theme' }}>right</b>.</p>
+		<p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', action: 'click', position: 'right', theme: 'tooltip-theme' }}>right</b> when clicked.</p>
 
-    <Prism code={"<b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', theme: 'tooltip-theme' }}>right</b>"} />
+    <Prism code={"<b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', action: 'click', theme: 'tooltip-theme' }}>right</b>"} />
 
     <p>This is also demonstrates the use of the <code>theme</code> property:</p>
 
@@ -83,7 +83,7 @@
 	</div>
 
 	<div class="example">
-		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" position="top" animation="slide" arrow={false}><i>top</i>.</Tooltip>
+		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" action="click" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when clicked.
 	</div>
 
 	<div class="example">
@@ -92,6 +92,7 @@
       <Tooltip
         content="Whoa! I appear to the right."
         position="right"
+        action="click"
         theme="tooltip-theme">
         <b>right</b>.
       </Tooltip>
@@ -100,6 +101,7 @@
 <Tooltip
   content="Whoa! I appear to the right."
   position="right"
+  action="click"
   theme="tooltip-theme">
   <b>right</b>
 </Tooltip>

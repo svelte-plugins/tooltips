@@ -5,6 +5,7 @@
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  export let action = 'hover';
   export let content = '';
   export let align = 'left';
   export let position = 'top';
@@ -12,7 +13,7 @@
   /**
    * @type {{ [x: string]: any; } | null}
    */
-   export let style = null;
+  export let style = null;
   export let theme = '';
   export let animation = '';
   export let arrow = true;
@@ -42,6 +43,14 @@
    */
   let timer = null;
 
+  const onClick = () => {
+    if (show) {
+      onMouseLeave();
+    } else {
+      onMouseEnter();
+    }
+  };
+
   const onMouseEnter = () => {
     const delay = animation ? 200 : 0;
 
@@ -68,11 +77,31 @@
     }
   };
 
-  onMount(() => {
+  const addListeners = () => {
     if (containerRef !== null) {
-      containerRef.addEventListener('mouseenter', onMouseEnter);
-      containerRef.addEventListener('mouseleave', onMouseLeave);
+      removeListeners();
+
+      if (action === 'click') {
+        containerRef.addEventListener('click', onClick);
+      }
+
+      if (action === 'hover') {
+        containerRef.addEventListener('mouseenter', onMouseEnter);
+        containerRef.addEventListener('mouseleave', onMouseLeave);
+      }
     }
+  }
+
+  const removeListeners = () => {
+    if (containerRef !== null) {
+      containerRef.removeEventListener('click', onClick);
+      containerRef.removeEventListener('mouseenter', onMouseEnter);
+      containerRef.removeEventListener('mouseleave', onMouseLeave);
+    }
+  };
+
+  onMount(() => {
+    addListeners();
 
     if (tooltipRef !== null) {
       if (isComponent && !component) {
@@ -103,13 +132,11 @@
       component = null;
     }
 
-    if (containerRef !== null) {
-      containerRef.removeEventListener('mouseenter', onMouseEnter);
-      containerRef.removeEventListener('mouseleave', onMouseLeave);
-    }
+    removeListeners();
   });
 
   $: isComponent = typeof content === 'object';
+  $: action, addListeners();
 </script>
 
 {#if content}

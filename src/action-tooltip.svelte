@@ -3,6 +3,7 @@
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  export let action = 'hover';
   export let content = '';
   export let align = 'left';
   export let position = 'top';
@@ -24,7 +25,7 @@
 
     if (ref !== null) {
       if (isComponent && !component) {
-        component = new content.component({ target: ref, props: content.props });
+        component = new content.component({ target: ref, props: { action, ...content.props } });
       }
 
       minWidth = getMinWidth(ref, maxWidth);

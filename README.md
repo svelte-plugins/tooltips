@@ -42,6 +42,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 ### Props
 | Prop         | Description                                                         | Value                                           |
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
+| action       | The action that triggers the tooltip (hover | click)                | `string` (default: `hover`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
 | arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
