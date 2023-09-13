@@ -54,7 +54,7 @@
   </div>
 
 	<div class="example">
-		<p>This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.</p>
+		<p>This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', animation: 'slide', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.</p>
     <Prism showLineNumbers={true} code={`
 <script>
   import ComponentAsContent from './ComponentAsContent.svelte';
@@ -94,8 +94,9 @@
         position="right"
         action="click"
         theme="tooltip-theme">
-        <b>right</b> when clicked.
+        <b>right</b>
       </Tooltip>
+      when clicked.
     </p>
     <Prism showLineNumbers={true} code={`
 <Tooltip

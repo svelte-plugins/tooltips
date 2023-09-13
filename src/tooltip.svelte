@@ -1,47 +1,70 @@
 <script>
   // @ts-check
-
   import { onMount, onDestroy } from 'svelte';
-  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { computeTooltipPosition, formatVariableKey, getMinWidth, isElementInViewport } from './helpers';
   import { inverse } from './constants';
 
+  /** @type {'hover' | 'click' | string} */
   export let action = 'hover';
+
+  /** @type {string | {component: any, props?: Record<string, any>}} */
   export let content = '';
+
+  /** @type {'left' | 'center' | 'right' | string} */
   export let align = 'left';
+
+  /** @type {'top' | 'bottom' | 'left' | 'right' | string} */
   export let position = 'top';
+
+  /** @type {number} */
   export let maxWidth = 200;
-  /**
-   * @type {{ [x: string]: any; } | null}
-   */
+
+  /** @type {{ [x: string]: any; } | null} */
   export let style = null;
+
+  /** @type {string} */
   export let theme = '';
+
+  /** @type {string} */
   export let animation = '';
+
+  /** @type {boolean} */
   export let arrow = true;
+
+  /** @type {boolean} */
   export let autoPosition = false;
 
-  /**
-   * @type {HTMLSpanElement | null}
-   */
+  /** @type {HTMLSpanElement | null} */
   let containerRef = null;
-  /**
-   * @type {HTMLDivElement | null}
-   */
+
+  /** @type {HTMLDivElement | null} */
   let tooltipRef = null;
+
+  /** @type {number} */
   let minWidth = 0;
-  /**
-   * @type {{ $destroy: () => void; } | null}
-   */
+
+  /** @type {{ $destroy: () => void; } | null} */
   let component = null;
+
+  /** @type {'top' | string} */
   let initialPosition = position;
-  /**
-   * @type {string | null}
-   */
+
+  /** @type {string | null} */
   let animationEffect = null;
+
+  /** @type {boolean} */
   let show = false;
-  /**
-   * @type {number | null | undefined}
-   */
+
+  /** @type {number | null} */
   let timer = null;
+
+  /** @type {{ bottom: number, top: number, right: number, left: number }} */
+  let coords = {
+    bottom: 0,
+    top: 0,
+    right: 0,
+    left: 0
+  };
 
   const onClick = () => {
     if (show) {
@@ -54,10 +77,13 @@
   const onMouseEnter = () => {
     const delay = animation ? 200 : 0;
 
-    if (autoPosition && !isInViewport(tooltipRef)) {
+    // @ts-ignore
+    if (autoPosition && !isElementInViewport(containerRef, tooltipRef)) {
       // @ts-ignore
       position = inverse[position];
     }
+
+    coords = computeTooltipPosition(containerRef, tooltipRef, position, coords);
 
     if (animation) {
       animationEffect = animation;
@@ -67,9 +93,9 @@
   };
 
   const onMouseLeave = () => {
-    show = false;
     position = initialPosition;
     animationEffect = null;
+    show = false;
 
     if (timer) {
       clearTimeout(timer);
@@ -90,7 +116,7 @@
         containerRef.addEventListener('mouseleave', onMouseLeave);
       }
     }
-  }
+  };
 
   const removeListeners = () => {
     if (containerRef !== null) {
@@ -102,6 +128,8 @@
 
   onMount(() => {
     addListeners();
+
+    computeTooltipPosition();
 
     if (tooltipRef !== null) {
       if (isComponent && !component) {
@@ -142,20 +170,22 @@
 {#if content}
   <span bind:this={containerRef} class="tooltip-container">
     <slot />
-      <div
-        bind:this={tooltipRef}
-        class="tooltip animation-{animationEffect} {position} {theme}"
-        class:arrowless={!arrow}
-        class:show
-        style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-      >
-        {#if !isComponent}
-          {@html content}
-        {/if}
-      </div>
-    </span>
+  </span>
 {:else}
   <slot />
+{/if}
+
+{#if content}
+  <div
+    bind:this={tooltipRef}
+    class="tooltip animation-{animationEffect} {position} {theme}"
+    class:arrowless={!arrow}
+    class:show
+    style="bottom: auto; right: auto; left: {coords.left}px; min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align}; top: {coords.top}px;">
+    {#if !isComponent}
+      {@html content}
+    {/if}
+  </div>
 {/if}
 
 <style>
@@ -186,10 +216,6 @@
    * Tooltip Styling
    *--------------------------*/
 
-  .tooltip-container {
-    position: relative;
-  }
-
   .tooltip {
     background-color: var(--tooltip-background-color);
     box-shadow: var(--tooltip-box-shadow);
@@ -202,6 +228,7 @@
     font-weight: var(--tooltip-font-weight);
     line-height: var(--tooltip-line-height);
     padding: var(--tooltip-padding);
+    pointer-events: none;
     position: absolute;
     text-align: left;
     visibility: hidden;

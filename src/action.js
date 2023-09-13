@@ -1,18 +1,18 @@
 import Tooltip from './action-tooltip.svelte';
 
 export const tooltip = (element, props) => {
-
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
 
+  const config = {
+    ...props,
+    targetElement: element
+  };
+
   if (title) {
     element.removeAttribute('title');
-
-    props = {
-      content: title,
-      ...props
-    }
+    config.content = title;
   }
 
   const onClick = () => {
@@ -27,7 +27,7 @@ export const tooltip = (element, props) => {
     if (!component) {
       component = new Tooltip({
         target: element,
-        props
+        props: config
       });
     }
   };
@@ -61,8 +61,6 @@ export const tooltip = (element, props) => {
   };
 
   addListeners();
-
-  element.style.position = 'relative';
 
   return {
     destroy() {

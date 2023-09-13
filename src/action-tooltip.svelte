@@ -1,70 +1,99 @@
 <script>
   // @ts-check
-
   import { onMount, onDestroy } from 'svelte';
-  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { computeTooltipPosition, formatVariableKey, getMinWidth, isElementInViewport } from './helpers';
   import { inverse } from './constants';
 
+  /** @type {HTMLElement | null} */
+  export let targetElement = null;
+
+  /** @type {'hover' | string} */
   export let action = 'hover';
+
+  /** @type {string | {component: any, props?: Record<string, any>}} */
   export let content = '';
+
+  /** @type {'left' | string} */
   export let align = 'left';
+
+  /** @type {'top' | string} */
   export let position = 'top';
+
+  /** @type {number} */
   export let maxWidth = 200;
-  /**
-   * @type {{ [x: string]: any; } | null}
-   */
-   export let style = null;
+
+  /** @type {Record<string, string> | null} */
+  export let style = null;
+
+  /** @type {string} */
   export let theme = '';
+
+  /** @type {string} */
   export let animation = '';
+
+  /** @type {boolean} */
   export let arrow = true;
+
+  /** @type {boolean} */
   export let autoPosition = false;
 
-  /**
-   * @type {HTMLDivElement | null}
-   */
-  let ref = null;
+  /** @type {HTMLDivElement | null} */
+  let tooltipRef = null;
+
+  /** @type {number} */
   let minWidth = 0;
-  /**
-   * @type {{ $destroy: () => void; } | null}
-   */
+
+  /** @type {any} */
   let component = null;
-  /**
-   * @type {string | null}
-   */
+
+  /** @type {string | null} */
   let animationEffect = null;
+
+  /** @type {boolean} */
   let show = false;
+
+  /** @type {{ bottom: number, top: number, right: number, left: number }} */
+  let coords = {
+    bottom: 0,
+    top: 0,
+    right: 0,
+    left: 0
+  };
 
   onMount(() => {
     const delay = animation ? 200 : 0;
 
-    if (ref !== null) {
+    if (tooltipRef !== null) {
       if (isComponent && !component) {
         // @ts-ignore
-        component = new content.component({ target: ref, props: { action, ...content.props } });
+        component = new content.component({ target: tooltipRef, props: { action, ...content.props } });
       }
 
-      minWidth = getMinWidth(ref, maxWidth);
+      minWidth = getMinWidth(tooltipRef, maxWidth);
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
           const key = formatVariableKey(prop);
           const value = style[prop];
 
-          ref.style.setProperty(`--tooltip-${key}`, value);
+          tooltipRef.style.setProperty(`--tooltip-${key}`, value);
         }
       }
-    }
 
-    if (autoPosition && !isInViewport(ref)) {
       // @ts-ignore
-      position = inverse[position];
-    }
+      if (autoPosition && !isElementInViewport(tooltipRef, targetElement)) {
+        // @ts-ignore
+        position = inverse[position];
+      }
 
-    if (animation) {
-      animationEffect = animation;
-    }
+      coords = computeTooltipPosition(targetElement, tooltipRef, position, coords);
 
-    setTimeout(() => (show = true), delay);
+      if (animation) {
+        animationEffect = animation;
+      }
+
+      setTimeout(() => (show = true), delay);
+    }
   });
 
   onDestroy(() => {
@@ -74,17 +103,17 @@
     }
   });
 
+  /** @type {boolean} */
   $: isComponent = typeof content === 'object';
 </script>
 
 {#if content}
   <div
-    bind:this={ref}
+    bind:this={tooltipRef}
     class="tooltip animation-{animationEffect} {position} {theme}"
     class:show
     class:arrowless={!arrow}
-    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-  >
+    style="bottom: auto; right: auto; left: {coords.left}px; min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align}; top: {coords.top}px;">
     {#if !isComponent}
       {@html content}
     {/if}
@@ -131,6 +160,7 @@
     font-weight: var(--tooltip-font-weight);
     line-height: var(--tooltip-line-height);
     padding: var(--tooltip-padding);
+    pointer-events: none;
     position: absolute;
     text-align: left;
     visibility: hidden;
