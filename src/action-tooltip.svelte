@@ -5,57 +5,76 @@
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  /** @type {'hover' | 'click' | 'prop' | string} */
   export let action = 'hover';
+
+  /** @type {string | {component: any, props?: Record<string, any>}} */
   export let content = '';
+
+  /** @type {'left' | string} */
   export let align = 'left';
+
+  /** @type {'top' | string} */
   export let position = 'top';
+
+  /** @type {number} */
   export let maxWidth = 200;
-  /**
-   * @type {{ [x: string]: any; } | null}
-   */
-   export let style = null;
+
+  /** @type {Record<string, string> | null} */
+  export let style = null;
+
+  /** @type {string} */
   export let theme = '';
+
+  /** @type {string} */
   export let animation = '';
+
+  /** @type {boolean} */
   export let arrow = true;
+
+  /** @type {boolean} */
   export let autoPosition = false;
 
-  /**
-   * @type {HTMLDivElement | null}
-   */
-  let ref = null;
+  /** @type {boolean} */
+  export let show = false;
+
+  /** @type {HTMLDivElement | null} */
+  let tooltipRef = null;
+
+  /** @type {number} */
   let minWidth = 0;
-  /**
-   * @type {{ $destroy: () => void; } | null}
-   */
+
+  /** @type {any} */
   let component = null;
-  /**
-   * @type {string | null}
-   */
+
+  /** @type {string | null} */
   let animationEffect = null;
-  let show = false;
+
+  /** @type {boolean} */
+  let visible = false;
+
+  const delay = animation ? 200 : 0;
 
   onMount(() => {
-    const delay = animation ? 200 : 0;
-
-    if (ref !== null) {
+    if (tooltipRef !== null) {
       if (isComponent && !component) {
         // @ts-ignore
-        component = new content.component({ target: ref, props: { action, ...content.props } });
+        component = new content.component({ target: tooltipRef, props: { action, ...content.props } });
       }
 
-      minWidth = getMinWidth(ref, maxWidth);
+      minWidth = getMinWidth(tooltipRef, maxWidth);
 
       if (style && typeof style === 'object') {
         for (let prop in style) {
           const key = formatVariableKey(prop);
           const value = style[prop];
 
-          ref.style.setProperty(`--tooltip-${key}`, value);
+          tooltipRef.style.setProperty(`--tooltip-${key}`, value);
         }
       }
     }
 
-    if (autoPosition && !isInViewport(ref)) {
+    if (autoPosition && !isInViewport(tooltipRef)) {
       // @ts-ignore
       position = inverse[position];
     }
@@ -64,7 +83,7 @@
       animationEffect = animation;
     }
 
-    setTimeout(() => (show = true), delay);
+    setTimeout(() => (visible = true), delay);
   });
 
   onDestroy(() => {
@@ -75,13 +94,14 @@
   });
 
   $: isComponent = typeof content === 'object';
+  $: tooltipRef && show ? setTimeout(() => (visible = true), delay) : (visible = false);
 </script>
 
 {#if content}
   <div
-    bind:this={ref}
+    bind:this={tooltipRef}
     class="tooltip animation-{animationEffect} {position} {theme}"
-    class:show
+    class:show={visible}
     class:arrowless={!arrow}
     style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
   >
