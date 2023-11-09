@@ -5,53 +5,72 @@
   import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
   import { inverse } from './constants';
 
+  /** @type {'hover' | 'click' | 'prop' | string} */
   export let action = 'hover';
+
+  /** @type {string | {component: any, props?: Record<string, any>}} */
   export let content = '';
+
+  /** @type {'left' | 'center' | 'right' | string} */
   export let align = 'left';
+
+  /** @type {'top' | 'bottom' | 'left' | 'right' | string} */
   export let position = 'top';
+
+  /** @type {number} */
   export let maxWidth = 200;
-  /**
-   * @type {{ [x: string]: any; } | null}
-   */
+
+  /** @type {{ [x: string]: any; } | null} */
   export let style = null;
+
+  /** @type {string} */
   export let theme = '';
+
+  /** @type {string} */
   export let animation = '';
+
+  /** @type {boolean} */
   export let arrow = true;
+
+  /** @type {boolean} */
   export let autoPosition = false;
 
-  /**
-   * @type {HTMLSpanElement | null}
-   */
+  /** @type {boolean} */
+  export let show = false;
+
+  /** @type {HTMLSpanElement | null} */
   let containerRef = null;
-  /**
-   * @type {HTMLDivElement | null}
-   */
+
+  /** @type {HTMLDivElement | null} */
   let tooltipRef = null;
+
+  /** @type {number} */
   let minWidth = 0;
-  /**
-   * @type {{ $destroy: () => void; } | null}
-   */
+
+  /** @type {{ $destroy: () => void; } | null} */
   let component = null;
+
+  /** @type {'top' | string} */
   let initialPosition = position;
-  /**
-   * @type {string | null}
-   */
+
+  /** @type {string | null} */
   let animationEffect = null;
-  let show = false;
-  /**
-   * @type {number | null | undefined}
-   */
+
+  /** @type {number | null} */
   let timer = null;
 
+  /** @type {boolean} */
+  let visible = false;
+
   const onClick = () => {
-    if (show) {
-      onMouseLeave();
+    if (visible) {
+      onHide();
     } else {
-      onMouseEnter();
+      onShow();
     }
   };
 
-  const onMouseEnter = () => {
+  const onShow = () => {
     const delay = animation ? 200 : 0;
 
     if (autoPosition && !isInViewport(tooltipRef)) {
@@ -63,11 +82,11 @@
       animationEffect = animation;
     }
 
-    timer = setTimeout(() => (show = true), delay);
+    timer = setTimeout(() => (visible = true), delay);
   };
 
-  const onMouseLeave = () => {
-    show = false;
+  const onHide = () => {
+    visible = false;
     position = initialPosition;
     animationEffect = null;
 
@@ -86,8 +105,8 @@
       }
 
       if (action === 'hover') {
-        containerRef.addEventListener('mouseenter', onMouseEnter);
-        containerRef.addEventListener('mouseleave', onMouseLeave);
+        containerRef.addEventListener('mouseenter', onShow);
+        containerRef.addEventListener('mouseleave', onHide);
       }
     }
   }
@@ -95,8 +114,8 @@
   const removeListeners = () => {
     if (containerRef !== null) {
       containerRef.removeEventListener('click', onClick);
-      containerRef.removeEventListener('mouseenter', onMouseEnter);
-      containerRef.removeEventListener('mouseleave', onMouseLeave);
+      containerRef.removeEventListener('mouseenter', onShow);
+      containerRef.removeEventListener('mouseleave', onHide);
     }
   };
 
@@ -137,6 +156,7 @@
 
   $: isComponent = typeof content === 'object';
   $: action, addListeners();
+  $: tooltipRef && show ? onShow() : onHide();
 </script>
 
 {#if content}
@@ -146,7 +166,7 @@
         bind:this={tooltipRef}
         class="tooltip animation-{animationEffect} {position} {theme}"
         class:arrowless={!arrow}
-        class:show
+        class:show={visible}
         style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
       >
         {#if !isComponent}

@@ -1,7 +1,6 @@
 import Tooltip from './action-tooltip.svelte';
 
 export const tooltip = (element, props) => {
-
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
@@ -17,13 +16,13 @@ export const tooltip = (element, props) => {
 
   const onClick = () => {
     if (component) {
-      onMouseLeave();
+      onHide();
     } else {
-      onMouseEnter();
+      onShow();
     }
   };
 
-  const onMouseEnter = () => {
+  const onShow = () => {
     if (!component) {
       component = new Tooltip({
         target: element,
@@ -32,7 +31,7 @@ export const tooltip = (element, props) => {
     }
   };
 
-  const onMouseLeave = () => {
+  const onHide = () => {
     if (component) {
       component.$destroy();
       component = null;
@@ -45,9 +44,11 @@ export const tooltip = (element, props) => {
 
       if (action === 'click') {
         element.addEventListener('click', onClick);
-      } else {
-        element.addEventListener('mouseenter', onMouseEnter);
-        element.addEventListener('mouseleave', onMouseLeave);
+      }
+
+      if (action === 'hover') {
+        element.addEventListener('mouseenter', onShow);
+        element.addEventListener('mouseleave', onHide);
       }
     }
   }
@@ -55,14 +56,18 @@ export const tooltip = (element, props) => {
   const removeListeners = () => {
     if (element !== null) {
       element.removeEventListener('click', onClick);
-      element.removeEventListener('mouseenter', onMouseEnter);
-      element.removeEventListener('mouseleave', onMouseLeave);
+      element.removeEventListener('mouseenter', onShow);
+      element.removeEventListener('mouseleave', onHide);
     }
   };
 
   addListeners();
 
   element.style.position = 'relative';
+
+  if (props.show) {
+    onShow();
+  }
 
   return {
     destroy() {

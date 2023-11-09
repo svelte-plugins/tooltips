@@ -10,6 +10,7 @@ exports[`Components: Tooltip should render the component 1`] = `
       Hello World!
       
     </div>
+    
   </div>
 </body>
 `;

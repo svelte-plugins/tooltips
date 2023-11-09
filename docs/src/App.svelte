@@ -2,6 +2,8 @@
   import Prism from 'svelte-prismjs';
   import { Tooltip, tooltip } from '@svelte-plugins/tooltips';
 	import ComponentAsContent from './ComponentAsContent.svelte';
+
+  let showTooltip = false;
 </script>
 
 <main>
@@ -54,7 +56,7 @@
   </div>
 
 	<div class="example">
-		<p>This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.</p>
+		<p>This tooltip should appear to the <u use:tooltip={{ content: { component: ComponentAsContent, props: { title: 'Title from props' }}, position: 'left', animation: 'slide', style: { backgroundColor: 'blue' } }}>left</u> and render the passed component as the tooltip content.</p>
     <Prism showLineNumbers={true} code={`
 <script>
   import ComponentAsContent from './ComponentAsContent.svelte';
@@ -86,6 +88,35 @@
 		This tooltip should appear on the <Tooltip content="<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>" position="top" animation="slide" arrow={false}><i>top</i></Tooltip> when you hover.
 	</div>
 
+  <div class="example">
+		This tooltip should appear <Tooltip content="<b>Tooltip Top</b><p>This is an example of using the 'show' prop.</p>" position="top" animation="slide" bind:show={showTooltip} autoPosition arrow={false} action="prop">on top</Tooltip> when the show button is clicked
+      <button on:click={() => (showTooltip = true)}>Show</button>
+      <button on:click={() => (showTooltip = false)}>Hide</button>
+
+  <Prism showLineNumbers={true} code={`
+
+<script>
+  import { Tooltip } from '@svelte-plugins/tooltips';
+
+  let showTooltip = false;
+</script>
+
+<Tooltip
+  content="<b>Tooltip Top</b><p>This is an example of using the 'show' prop.</p>"
+  position="top"
+  animation="slide"
+  bind:show={showTooltip}
+  autoPosition
+  arrow={false}
+  action="prop">
+  Should show here
+</Tooltip>
+
+<button on:click={() => (showTooltip = true)}>Show</button>
+<button on:click={() => (showTooltip = false)}>Hide</button>
+`} />
+  </div>
+
 	<div class="example">
 		<p>
       This tooltip should appear to the
@@ -94,8 +125,9 @@
         position="right"
         action="click"
         theme="tooltip-theme">
-        <b>right</b> when clicked.
+        <b>right</b>
       </Tooltip>
+      when clicked.
     </p>
     <Prism showLineNumbers={true} code={`
 <Tooltip

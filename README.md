@@ -42,7 +42,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 ### Props
 | Prop         | Description                                                         | Value                                           |
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
-| action       | The action that triggers the tooltip (hover | click)                | `string` (default: `hover`)                     |
+| action       | The action that triggers the tooltip (hover | click | prop)         | `string` (default: `hover`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
 | arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
@@ -50,6 +50,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 | maxWidth     | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
 | position     | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
 | theme        | The CSS theme class name                                            | `string` (default: ``)                          |
+| show         | Allows you to manually control the tooltip visibility               | `boolean` (default: `false`)                    |
 | style        | The object containing theme variable overrides                      | `object` (default: `null`)                      |
 
 #### Using components as content

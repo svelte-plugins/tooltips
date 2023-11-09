@@ -2,35 +2,16 @@ import type { SvelteComponentTyped } from 'svelte';
 
 export interface ComponentProps {
   /**
-   * The content of the tooltip.
-   * @default ''
+   * The action to trigger the tooltip
+   * @default 'hover'
    */
-  content?: string;
+  action: 'hover' | 'click' | 'prop' | string;
 
   /**
-   * The position of the tooltip.
-   * Allowed values are 'top', 'bottom', 'left' or 'right'.
-   * @default 'top'
+   * The alignment of the tooltip.
+   * @default 'left'
    */
-  position?: string;
-
-  /**
-   * The maximum width of the tooltip.
-   * @default 200
-   */
-  maxWidth?: number;
-
-  /**
-   * The style of the tooltip.
-   * @default null
-   */
-  style?: undefined;
-
-  /**
-   * The theme of the tooltip.
-   * @default ''
-   */
-  theme?: string;
+  align?: 'left' | 'right' | 'center' | string;
 
   /**
    * The animation style of the tooltip.
@@ -45,10 +26,46 @@ export interface ComponentProps {
   arrow?: boolean;
 
   /**
-   * Whether to automatically position the tooltip.
+   * Whether to automatically position the tooltip when clipping occurs.
    * @default false
    */
   autoPosition?: boolean;
+
+  /**
+   * The content of the tooltip.
+   * @default ''
+   */
+  content?: string;
+
+  /**
+   * The maximum width of the tooltip.
+   * @default 200
+   */
+  maxWidth?: number;
+
+  /**
+   * The position of the tooltip.
+   * @default 'top'
+   */
+  position?: 'bottom' | 'left' | 'right' | 'top' | string;
+
+  /**
+   * Control the visibility of the tooltip.
+   * @default false
+   */
+  show?: boolean;
+
+  /**
+   * The style of the tooltip.
+   * @default null
+   */
+  style?: undefined;
+
+  /**
+   * The theme of the tooltip.
+   * @default ''
+   */
+  theme?: string;
 }
 
 export default class Component extends SvelteComponentTyped<
