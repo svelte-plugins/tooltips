@@ -89,10 +89,33 @@
 	</div>
 
   <div class="example">
-		This tooltip should appear <Tooltip content="<b>Tooltip Top</b><p>This is an example of using the 'show' prop.</p>" position="top" animation="slide" bind:show={showTooltip} autoPosition arrow={false}>on top</Tooltip> when the show button is clicked
+		This tooltip should appear <Tooltip content="<b>Tooltip Top</b><p>This is an example of using the 'show' prop.</p>" position="top" animation="slide" bind:show={showTooltip} autoPosition arrow={false} action="prop">on top</Tooltip> when the show button is clicked
       <button on:click={() => (showTooltip = true)}>Show</button>
       <button on:click={() => (showTooltip = false)}>Hide</button>
-	</div>
+
+  <Prism showLineNumbers={true} code={`
+
+<script>
+  import { Tooltip } from '@svelte-plugins/tooltips';
+
+  let showTooltip = false;
+</script>
+
+<Tooltip
+  content="<b>Tooltip Top</b><p>This is an example of using the 'show' prop.</p>"
+  position="top"
+  animation="slide"
+  bind:show={showTooltip}
+  autoPosition
+  arrow={false}
+  action="prop">
+  Should show here
+</Tooltip>
+
+<button on:click={() => (showTooltip = true)}>Show</button>
+<button on:click={() => (showTooltip = false)}>Hide</button>
+`} />
+  </div>
 
 	<div class="example">
 		<p>
