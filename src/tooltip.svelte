@@ -2,7 +2,7 @@
   // @ts-check
 
   import { onMount, onDestroy } from 'svelte';
-  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { computeTooltipPosition, formatVariableKey, getMinWidth, isElementInViewport } from './helpers';
   import { inverse } from './constants';
 
   /** @type {'hover' | 'click' | 'prop' | string} */
@@ -62,6 +62,14 @@
   /** @type {boolean} */
   let visible = false;
 
+  /** @type {{ bottom: number, top: number, right: number, left: number }} */
+  let coords = {
+    bottom: 0,
+    top: 0,
+    right: 0,
+    left: 0
+  };
+
   const onClick = () => {
     if (visible) {
       onHide();
@@ -73,10 +81,13 @@
   const onShow = () => {
     const delay = animation ? 200 : 0;
 
-    if (autoPosition && !isInViewport(tooltipRef)) {
+    // @ts-ignore
+    if (autoPosition && !isElementInViewport(containerRef, tooltipRef, position)) {
       // @ts-ignore
       position = inverse[position];
     }
+
+    coords = computeTooltipPosition(containerRef, tooltipRef, position, coords);
 
     if (animation) {
       animationEffect = animation;
@@ -122,6 +133,8 @@
   onMount(() => {
     addListeners();
 
+    computeTooltipPosition();
+
     if (tooltipRef !== null) {
       if (isComponent && !component) {
         // @ts-ignore
@@ -162,18 +175,17 @@
 {#if content}
   <span bind:this={containerRef} class="tooltip-container">
     <slot />
-      <div
-        bind:this={tooltipRef}
-        class="tooltip animation-{animationEffect} {position} {theme}"
-        class:arrowless={!arrow}
-        class:show={visible}
-        style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-      >
-        {#if !isComponent}
-          {@html content}
-        {/if}
-      </div>
-    </span>
+  </span>
+  <div
+    bind:this={tooltipRef}
+    class="tooltip animation-{animationEffect} {position} {theme}"
+    class:arrowless={!arrow}
+    class:show={visible}
+    style="bottom: auto; right: auto; left: {coords.left}px; min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align}; top: {coords.top}px;">
+    {#if !isComponent}
+      {@html content}
+    {/if}
+  </div>
 {:else}
   <slot />
 {/if}
@@ -197,6 +209,7 @@
     --tooltip-offset-x: 0px;
     --tooltip-offset-y: 0px;
     --tooltip-padding: 12px;
+    --tooltip-pointer-events: none;
     --tooltip-white-space-hidden: nowrap;
     --tooltip-white-space-shown: normal;
     --tooltip-z-index: 100;
@@ -205,10 +218,6 @@
   /*--------------------------*
    * Tooltip Styling
    *--------------------------*/
-
-  .tooltip-container {
-    position: relative;
-  }
 
   .tooltip {
     background-color: var(--tooltip-background-color);
@@ -222,6 +231,7 @@
     font-weight: var(--tooltip-font-weight);
     line-height: var(--tooltip-line-height);
     padding: var(--tooltip-padding);
+    pointer-events: var(--tooltip-pointer-events);
     position: absolute;
     text-align: left;
     visibility: hidden;

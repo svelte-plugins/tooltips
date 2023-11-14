@@ -2,8 +2,11 @@
   // @ts-check
 
   import { onMount, onDestroy } from 'svelte';
-  import { formatVariableKey, getMinWidth, isInViewport } from './helpers';
+  import { computeTooltipPosition, formatVariableKey, getMinWidth, isElementInViewport } from './helpers';
   import { inverse } from './constants';
+
+  /** @type {HTMLElement | null} */
+  export let targetElement = null;
 
   /** @type {'hover' | 'click' | 'prop' | string} */
   export let action = 'hover';
@@ -53,6 +56,14 @@
   /** @type {boolean} */
   let visible = false;
 
+  /** @type {{ bottom: number, top: number, right: number, left: number }} */
+  let coords = {
+    bottom: 0,
+    top: 0,
+    right: 0,
+    left: 0
+  };
+
   const delay = animation ? 200 : 0;
 
   onMount(() => {
@@ -74,10 +85,13 @@
       }
     }
 
-    if (autoPosition && !isInViewport(tooltipRef)) {
+    // @ts-ignore
+    if (autoPosition && !isElementInViewport(tooltipRef, targetElement, position)) {
       // @ts-ignore
       position = inverse[position];
     }
+
+    coords = computeTooltipPosition(targetElement, tooltipRef, position, coords);
 
     if (animation) {
       animationEffect = animation;
@@ -103,8 +117,7 @@
     class="tooltip animation-{animationEffect} {position} {theme}"
     class:show={visible}
     class:arrowless={!arrow}
-    style="min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align};"
-  >
+    style="bottom: auto; right: auto; left: {coords.left}px; min-width: {minWidth}px; max-width: {maxWidth}px; text-align: {align}; top: {coords.top}px;">
     {#if !isComponent}
       {@html content}
     {/if}
@@ -130,6 +143,7 @@
     --tooltip-offset-x: 12px;
     --tooltip-offset-y: 12px;
     --tooltip-padding: 12px;
+    --tooltip-pointer-events: none;
     --tooltip-white-space-hidden: nowrap;
     --tooltip-white-space-shown: normal;
     --tooltip-z-index: 100;
@@ -151,6 +165,7 @@
     font-weight: var(--tooltip-font-weight);
     line-height: var(--tooltip-line-height);
     padding: var(--tooltip-padding);
+    pointer-events: var(---tooltip-pointer-events);
     position: absolute;
     text-align: left;
     visibility: hidden;
