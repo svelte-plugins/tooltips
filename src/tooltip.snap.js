@@ -5,16 +5,15 @@ exports[`Components: Tooltip should render the component 1`] = `
   <div>
     <span
       class="tooltip-container"
+    />
+     
+    <div
+      class="tooltip animation-null top"
+      style="left: 0px; min-width: 200px; max-width: 200px; text-align: left; top: 0px;"
     >
-       
-      <div
-        class="tooltip animation-null top"
-        style="min-width: 200px; max-width: 200px; text-align: left;"
-      >
-        Hello World!
-        
-      </div>
-    </span>
+      Hello World!
+      
+    </div>
     
   </div>
 </body>

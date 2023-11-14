@@ -18,13 +18,68 @@ export const getMinWidth = (element, maxWidth) => {
   return Math.round(Math.min(maxWidth, contentWidth || maxWidth));
 };
 
-export const isInViewport = (element) => {
+export const isElementInViewport = (element, container = null, position) => {
   const rect = element.getBoundingClientRect();
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  let isInsideViewport = (
+    rect.bottom > 0 &&
+    rect.top < viewportHeight &&
+    rect.right > 0 &&
+    rect.left < viewportWidth
   );
+
+  if (container) {
+    const containerRect = container.getBoundingClientRect();
+
+    if (position === 'top' || position === 'bottom') {
+      isInsideViewport = (
+        (containerRect.bottom + containerRect.height) < viewportHeight &&
+        containerRect.top < viewportHeight
+      );
+    } else {
+      isInsideViewport = (
+        (containerRect.right + containerRect.width) < viewportWidth &&
+        containerRect.left < viewportWidth
+      );
+    }
+
+    return isInsideViewport;
+  }
+
+  return isInsideViewport;
+};
+
+export const computeTooltipPosition = (containerRef, tooltipRef, position, coords) => {
+  if (!containerRef || !tooltipRef) {
+    return coords;
+  }
+
+  const containerRect = containerRef.getBoundingClientRect();
+  const tooltipRect = tooltipRef.getBoundingClientRect();
+
+  switch (position) {
+    case 'top':
+      coords.top = containerRect.top;
+      coords.left = containerRect.left + (containerRect.width / 2);
+      break;
+    case 'bottom':
+      coords.top = containerRect.top - tooltipRect.height;
+      coords.left = containerRect.left + (containerRect.width / 2);
+      break;
+    case 'left':
+      coords.left = containerRect.left;
+      coords.top = containerRect.top + (containerRect.height / 2);
+      break;
+    case 'right':
+      coords.left = containerRect.right - tooltipRect.width;
+      coords.top = containerRect.top + (containerRect.height / 2);
+      break;
+  }
+
+  coords.top += window.scrollY;
+  coords.left += window.scrollX;
+
+  return coords;
 };

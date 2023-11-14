@@ -62,6 +62,12 @@ export interface ComponentProps {
   style?: undefined;
 
   /**
+   * The target element to bind the tooltip to.
+   * @default null
+   */
+  targetElement?: HTMLElement | null,
+
+  /**
    * The theme of the tooltip.
    * @default ''
    */
