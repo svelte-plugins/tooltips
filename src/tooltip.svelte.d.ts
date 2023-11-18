@@ -20,6 +20,12 @@ export interface ComponentProps {
   animation?: string;
 
   /**
+   * The animation's delay of the tooltip.
+   * @default 200
+   */
+  delay?: number;
+
+  /**
    * Whether to show the arrow of the tooltip.
    * @default true
    */

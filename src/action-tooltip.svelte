@@ -32,6 +32,9 @@
   /** @type {string} */
   export let animation = '';
 
+  /** @type {number} */
+  export let delay = 200;
+
   /** @type {boolean} */
   export let arrow = true;
 
@@ -64,7 +67,7 @@
     left: 0
   };
 
-  const delay = animation ? 200 : 0;
+  const animationDelay = animation ? delay : 0;
 
   onMount(() => {
     if (tooltipRef !== null) {
@@ -97,7 +100,7 @@
       animationEffect = animation;
     }
 
-    setTimeout(() => (visible = true), delay);
+    setTimeout(() => (visible = true), animationDelay);
   });
 
   onDestroy(() => {
@@ -108,7 +111,7 @@
   });
 
   $: isComponent = typeof content === 'object';
-  $: tooltipRef && show ? setTimeout(() => (visible = true), delay) : (visible = false);
+  $: tooltipRef && show ? setTimeout(() => (visible = true), animationDelay) : (visible = false);
 </script>
 
 {#if content}
