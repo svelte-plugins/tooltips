@@ -44,6 +44,7 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 | :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
 | action       | The action that triggers the tooltip (hover | click | prop)         | `string` (default: `hover`)                     |
 | animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
+| delay        | The animation delay in milliseconds to apply to the tooltip         | `number` (default: `200`)                       |
 | arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
 | autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
 | content      | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
