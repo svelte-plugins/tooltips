@@ -29,6 +29,9 @@
   /** @type {string} */
   export let animation = '';
 
+  /** @type {number} */
+  export let delay = 200;
+
   /** @type {boolean} */
   export let arrow = true;
 
@@ -79,7 +82,7 @@
   };
 
   const onShow = () => {
-    const delay = animation ? 200 : 0;
+    const animationDelay = animation ? delay : 0;
 
     // @ts-ignore
     if (autoPosition && !isElementInViewport(containerRef, tooltipRef, position)) {
@@ -93,7 +96,7 @@
       animationEffect = animation;
     }
 
-    timer = setTimeout(() => (visible = true), delay);
+    timer = setTimeout(() => (visible = true), animationDelay);
   };
 
   const onHide = () => {
