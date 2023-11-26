@@ -1,13 +1,13 @@
 {
   "name": "@svelte-plugins/tooltips",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "description": "A simple tooltip action and component designed for Svelte.",
   "author": "Kieran Boyle (https://github.com/dysfunc)",
   "svelte": "./src/index.js",
   "types": "./src/index.d.ts",
-  "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "type": "module",
   "sideEffects": false,
   "repository": {
