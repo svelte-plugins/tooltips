@@ -57,24 +57,34 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
   }
 
   const containerRect = containerRef.getBoundingClientRect();
+  let containerTop = containerRect.top;
+  let containerLeft = containerRect.left;
+
+  if (containerRef.offsetParent) {
+    // If there is an offsetParent, the containerRef could already be positioned differently than we expect. In this case, the tooltip's absolute positioning will be relative to the offsetParent, so we should ensure we don't let the offsetParent's rect positioning influence the tooltip's.
+    const parentRect = containerRef.offsetParent.getBoundingClientRect();
+    containerTop -= parentRect.top;
+    containerLeft -= parentRect.left;
+  }
+
   const tooltipRect = tooltipRef.getBoundingClientRect();
 
   switch (position) {
     case 'top':
-      coords.top = containerRect.top;
-      coords.left = containerRect.left + (containerRect.width / 2);
+      coords.top = containerTop;
+      coords.left = containerLeft + containerRect.width / 2;
       break;
     case 'bottom':
-      coords.top = containerRect.top - tooltipRect.height;
-      coords.left = containerRect.left + (containerRect.width / 2);
+      coords.top = containerTop - tooltipRect.height;
+      coords.left = containerLeft + containerRect.width / 2;
       break;
     case 'left':
-      coords.left = containerRect.left;
-      coords.top = containerRect.top + (containerRect.height / 2);
+      coords.left = containerLeft;
+      coords.top = containerTop + containerRect.height / 2;
       break;
     case 'right':
       coords.left = containerRect.right - tooltipRect.width;
-      coords.top = containerRect.top + (containerRect.height / 2);
+      coords.top = containerTop + containerRect.height / 2;
       break;
   }
 
