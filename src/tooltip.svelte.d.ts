@@ -1,81 +1,31 @@
-import type { SvelteComponentTyped } from 'svelte';
+declare module 'tooltip' {
+  import { SvelteComponent } from 'svelte';
+  import { HTMLAttributes } from 'svelte/elements';
 
-export interface ComponentProps {
-  /**
-   * The action to trigger the tooltip
-   * @default 'hover'
-   */
-  action: 'hover' | 'click' | 'prop' | string;
+  export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
+    action: 'hover' | 'click' | 'prop';
+    align?: 'left' | 'right' | 'center';
+    animation?: string;
+    delay?: number;
+    arrow?: boolean;
+    autoPosition?: boolean;
+    content?: string;
+    maxWidth?: number;
+    position?: 'bottom' | 'left' | 'right' | 'top';
+    show?: boolean;
+    style?: undefined;
+    theme?: string;
+  }
 
-  /**
-   * The alignment of the tooltip.
-   * @default 'left'
-   */
-  align?: 'left' | 'right' | 'center' | string;
+  export interface TooltipEvents {}
 
-  /**
-   * The animation style of the tooltip.
-   * @default ''
-   */
-  animation?: string;
+  export interface TooltipSlots {
+    default: {};
+  }
 
-  /**
-   * The animation's delay of the tooltip.
-   * @default 200
-   */
-  delay?: number;
-
-  /**
-   * Whether to show the arrow of the tooltip.
-   * @default true
-   */
-  arrow?: boolean;
-
-  /**
-   * Whether to automatically position the tooltip when clipping occurs.
-   * @default false
-   */
-  autoPosition?: boolean;
-
-  /**
-   * The content of the tooltip.
-   * @default ''
-   */
-  content?: string;
-
-  /**
-   * The maximum width of the tooltip.
-   * @default 200
-   */
-  maxWidth?: number;
-
-  /**
-   * The position of the tooltip.
-   * @default 'top'
-   */
-  position?: 'bottom' | 'left' | 'right' | 'top' | string;
-
-  /**
-   * Control the visibility of the tooltip.
-   * @default false
-   */
-  show?: boolean;
-
-  /**
-   * The style of the tooltip.
-   * @default null
-   */
-  style?: undefined;
-
-  /**
-   * The theme of the tooltip.
-   * @default ''
-   */
-  theme?: string;
+  export default class Tooltip extends SvelteComponent<
+    TooltipProps,
+    TooltipEvents,
+    TooltipSlots
+  > {}
 }
-
-export default class Component extends SvelteComponentTyped<
-  ComponentProps,
-  Record<string, any>,
-  { default: {} }
-> {}
