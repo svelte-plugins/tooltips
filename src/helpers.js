@@ -23,26 +23,17 @@ export const isElementInViewport = (element, container = null, position) => {
   const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-  let isInsideViewport = (
-    rect.bottom > 0 &&
-    rect.top < viewportHeight &&
-    rect.right > 0 &&
-    rect.left < viewportWidth
-  );
+  let isInsideViewport = rect.bottom > 0 && rect.top < viewportHeight && rect.right > 0 && rect.left < viewportWidth;
 
   if (container) {
     const containerRect = container.getBoundingClientRect();
 
     if (position === 'top' || position === 'bottom') {
-      isInsideViewport = (
-        (containerRect.bottom + containerRect.height) < viewportHeight &&
-        containerRect.top < viewportHeight
-      );
+      isInsideViewport =
+        containerRect.bottom + containerRect.height < viewportHeight && containerRect.top < viewportHeight;
     } else {
-      isInsideViewport = (
-        (containerRect.right + containerRect.width) < viewportWidth &&
-        containerRect.left < viewportWidth
-      );
+      isInsideViewport =
+        containerRect.right + containerRect.width < viewportWidth && containerRect.left < viewportWidth;
     }
 
     return isInsideViewport;
@@ -56,25 +47,55 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
     return coords;
   }
 
+  let cumulativeOffsetTop = 0;
+  let cumulativeOffsetLeft = 0;
+
+  let fixedOffsetTop = 0;
+  let stickyOffsetTop = 0;
+  let fixedOffsetLeft = 0;
+
+  let currentElement = containerRef;
+
+  while (currentElement !== document.body) {
+    const computedStyle = window.getComputedStyle(currentElement);
+    const elementPosition = computedStyle.position;
+
+    if (elementPosition === 'fixed') {
+      fixedOffsetTop += currentElement.getBoundingClientRect().top + window.scrollY;
+      fixedOffsetLeft += currentElement.getBoundingClientRect().left + window.scrollX;
+    } else if (elementPosition === 'sticky') {
+      stickyOffsetTop += currentElement.getBoundingClientRect().top;
+      fixedOffsetLeft += currentElement.getBoundingClientRect().left + window.scrollX;
+    } else if (elementPosition === 'absolute' || elementPosition === 'relative') {
+      cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
+      cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;
+    }
+
+    currentElement = currentElement.parentElement;
+  }
+
   const containerRect = containerRef.getBoundingClientRect();
   const tooltipRect = tooltipRef.getBoundingClientRect();
 
+  let finalTop = containerRect.top + cumulativeOffsetTop + stickyOffsetTop - fixedOffsetTop;
+  let finalLeft = containerRect.left + cumulativeOffsetLeft - fixedOffsetLeft;
+
   switch (position) {
     case 'top':
-      coords.top = containerRect.top;
-      coords.left = containerRect.left + (containerRect.width / 2);
+      coords.top = finalTop;
+      coords.left = finalLeft + containerRect.width / 2;
       break;
     case 'bottom':
-      coords.top = containerRect.top - tooltipRect.height;
-      coords.left = containerRect.left + (containerRect.width / 2);
+      coords.top = finalTop - tooltipRect.height;
+      coords.left = finalLeft + containerRect.width / 2;
       break;
     case 'left':
-      coords.left = containerRect.left;
-      coords.top = containerRect.top + (containerRect.height / 2);
+      coords.left = finalLeft;
+      coords.top = finalTop + containerRect.height / 2;
       break;
     case 'right':
-      coords.left = containerRect.right - tooltipRect.width;
-      coords.top = containerRect.top + (containerRect.height / 2);
+      coords.left = finalLeft + containerRect.width - tooltipRect.width;
+      coords.top = finalTop + containerRect.height / 2;
       break;
   }
 
