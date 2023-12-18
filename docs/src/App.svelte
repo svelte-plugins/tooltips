@@ -16,13 +16,13 @@
 
    <h2>Examples using action</h2>
 
-  <div class="example">
+  <div class="example relative">
     <p>This tooltip should appear on the <u title="hello world!" action="click"  use:tooltip>top</u> when clicked. The content for the tooltip is provided by the <code>title</code> attribute.</p>
 
     <Prism code={'<u title="hello world!" action="click" use:tooltip>top</u>'} />
   </div>
 
-  <div class="example">
+  <div class="example relative">
     <p>This tooltip should appear on the <i use:tooltip={{ content: '<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>', position: 'top', animation: 'slide', arrow: false }}>top</i>.</p>
 
     <Prism code={"<i use:tooltip={{ content: '<b>Tooltip Top</b><p>This is an example of using HTML and content wrapping.</p>', position: 'top', animation: 'slide', arrow: false }}>top</i>"} />
@@ -260,6 +260,10 @@
 
   .example {
     margin-bottom: 40px;
+  }
+
+  .example.relative {
+    position: relative;
   }
 
   :global(.tooltip.tooltip-theme) {
