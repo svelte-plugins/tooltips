@@ -100,7 +100,6 @@
   };
 
   const onHide = () => {
-    console.log('onHide');
     visible = false;
     position = initialPosition;
     animationEffect = null;
