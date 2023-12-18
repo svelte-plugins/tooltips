@@ -12,7 +12,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/svelte-plugins/tooltips.git"
+    "url": "git+https://github.com/svelte-plugins/tooltips.git"
   },
   "homepage": "https://github.com/svelte-plugins/tooltips",
   "bugs": "https://github.com/svelte-plugins/tooltips/issues",
