@@ -4,7 +4,7 @@ exports[`Components: Tooltip > should render the component 1`] = `
 <body>
   <div>
     <div
-      class="tooltip animation-null top  svelte-hla1ha"
+      class="tooltip animation-null top  svelte-ngud14"
       style="left: 0px; min-width: 0px; max-width: 200px; text-align: left; top: 0px;"
     >
       Hello World!
