@@ -69,6 +69,19 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
     } else if (elementPosition === 'absolute' || elementPosition === 'relative') {
       cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
       cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;
+
+      if (elementPosition === 'relative') {
+        cumulativeOffsetTop -= currentElement.offsetTop;
+        cumulativeOffsetLeft -= currentElement.offsetLeft;
+      }
+    }
+
+    const transform = computedStyle.transform;
+
+    if (transform && transform !== 'none') {
+      const transformMatrix = new DOMMatrix(transform);
+      cumulativeOffsetTop -= transformMatrix.m42;
+      cumulativeOffsetLeft -= transformMatrix.m41;
     }
 
     currentElement = currentElement.parentElement;
