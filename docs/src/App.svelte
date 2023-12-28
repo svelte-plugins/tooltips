@@ -29,7 +29,7 @@
   </div>
 
   <div class="example">
-    <p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', hideOnClickOutside: true, action: 'click', position: 'right', theme: 'tooltip-theme' }}>right</b> when clicked.</p>
+    <p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', hideOnClickOutside: true, action: 'click', position: 'right', theme: 'tooltip-theme' }}>right</b> when clicked. It will also hide itself once you click outside of the tooltip.</p>
 
     <Prism code={"<b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', action: 'click', theme: 'tooltip-theme' }}>right</b>"} />
 
@@ -128,7 +128,7 @@
         theme="tooltip-theme">
         <b>right</b>
       </Tooltip>
-      when clicked.
+      when clicked. It will also hide itself once you click outside of the tooltip.
     </p>
     <Prism showLineNumbers={true} code={`
 <Tooltip
