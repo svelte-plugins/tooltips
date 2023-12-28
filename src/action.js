@@ -1,4 +1,5 @@
 import Tooltip from './action-tooltip.svelte';
+import { onClickOutside } from './helpers';
 
 export const tooltip = (element, props) => {
   let component = null;
@@ -49,6 +50,10 @@ export const tooltip = (element, props) => {
 
       if (action === 'click') {
         element.addEventListener('click', onClick);
+
+        if (config.hideOnClickOutside) {
+          onClickOutside(element, onHide);
+        }
       }
 
       if (action === 'hover') {
@@ -56,7 +61,7 @@ export const tooltip = (element, props) => {
         element.addEventListener('mouseleave', onHide);
       }
     }
-  }
+  };
 
   const removeListeners = () => {
     if (element !== null) {
@@ -77,4 +82,4 @@ export const tooltip = (element, props) => {
       }
     }
   };
-}
+};

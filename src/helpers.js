@@ -10,8 +10,14 @@ export const getMinWidth = (element, maxWidth) => {
   const extraCharPadding = 2;
   const elementWidth = element.getBoundingClientRect().width + extraCharPadding;
   const elementStyle = window.getComputedStyle(element);
-  const elementPaddingLeft = parseInt(elementStyle.getPropertyValue('padding-left'), 10);
-  const elementPaddingRight = parseInt(elementStyle.getPropertyValue('padding-right'), 10);
+  const elementPaddingLeft = parseInt(
+    elementStyle.getPropertyValue('padding-left'),
+    10
+  );
+  const elementPaddingRight = parseInt(
+    elementStyle.getPropertyValue('padding-right'),
+    10
+  );
   const elementPadding = elementPaddingLeft + elementPaddingRight;
   const contentWidth = elementWidth - elementPadding;
 
@@ -20,20 +26,28 @@ export const getMinWidth = (element, maxWidth) => {
 
 export const isElementInViewport = (element, container = null, position) => {
   const rect = element.getBoundingClientRect();
-  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const viewportWidth =
+    window.innerWidth || document.documentElement.clientWidth;
+  const viewportHeight =
+    window.innerHeight || document.documentElement.clientHeight;
 
-  let isInsideViewport = rect.bottom > 0 && rect.top < viewportHeight && rect.right > 0 && rect.left < viewportWidth;
+  let isInsideViewport =
+    rect.bottom > 0 &&
+    rect.top < viewportHeight &&
+    rect.right > 0 &&
+    rect.left < viewportWidth;
 
   if (container) {
     const containerRect = container.getBoundingClientRect();
 
     if (position === 'top' || position === 'bottom') {
       isInsideViewport =
-        containerRect.bottom + containerRect.height < viewportHeight && containerRect.top < viewportHeight;
+        containerRect.bottom + containerRect.height < viewportHeight &&
+        containerRect.top < viewportHeight;
     } else {
       isInsideViewport =
-        containerRect.right + containerRect.width < viewportWidth && containerRect.left < viewportWidth;
+        containerRect.right + containerRect.width < viewportWidth &&
+        containerRect.left < viewportWidth;
     }
 
     return isInsideViewport;
@@ -42,7 +56,12 @@ export const isElementInViewport = (element, container = null, position) => {
   return isInsideViewport;
 };
 
-export const computeTooltipPosition = (containerRef, tooltipRef, position, coords) => {
+export const computeTooltipPosition = (
+  containerRef,
+  tooltipRef,
+  position,
+  coords
+) => {
   if (!containerRef || !tooltipRef) {
     return coords;
   }
@@ -61,12 +80,18 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
     const elementPosition = computedStyle.position;
 
     if (elementPosition === 'fixed') {
-      fixedOffsetTop += currentElement.getBoundingClientRect().top + window.scrollY;
-      fixedOffsetLeft += currentElement.getBoundingClientRect().left + window.scrollX;
+      fixedOffsetTop +=
+        currentElement.getBoundingClientRect().top + window.scrollY;
+      fixedOffsetLeft +=
+        currentElement.getBoundingClientRect().left + window.scrollX;
     } else if (elementPosition === 'sticky') {
       stickyOffsetTop += currentElement.getBoundingClientRect().top;
-      fixedOffsetLeft += currentElement.getBoundingClientRect().left + window.scrollX;
-    } else if (elementPosition === 'absolute' || elementPosition === 'relative') {
+      fixedOffsetLeft +=
+        currentElement.getBoundingClientRect().left + window.scrollX;
+    } else if (
+      elementPosition === 'absolute' ||
+      elementPosition === 'relative'
+    ) {
       cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
       cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;
 
@@ -90,7 +115,8 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
   const containerRect = containerRef.getBoundingClientRect();
   const tooltipRect = tooltipRef.getBoundingClientRect();
 
-  let finalTop = containerRect.top + cumulativeOffsetTop + stickyOffsetTop - fixedOffsetTop;
+  let finalTop =
+    containerRect.top + cumulativeOffsetTop + stickyOffsetTop - fixedOffsetTop;
   let finalLeft = containerRect.left + cumulativeOffsetLeft - fixedOffsetLeft;
 
   switch (position) {
@@ -116,4 +142,20 @@ export const computeTooltipPosition = (containerRef, tooltipRef, position, coord
   coords.left += window.scrollX;
 
   return coords;
+};
+
+export const onClickOutside = (node, callback) => {
+  const detect = ({ target }) => {
+    if (!node.contains(target)) {
+      callback();
+    }
+  };
+
+  document.addEventListener('click', detect, { passive: true, capture: true });
+
+  return {
+    destroy() {
+      document.removeEventListener('click', detect);
+    }
+  };
 };
