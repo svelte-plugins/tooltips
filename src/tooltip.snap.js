@@ -8,8 +8,8 @@ exports[`Components: Tooltip > should render the component 1`] = `
     />
      
     <div
-      class="tooltip animation-null top  svelte-ir0j5h"
-      style="left: 0px; min-width: 0px; max-width: 200px; text-align: left; top: 0px;"
+      class="tooltip animation-null top  svelte-1xktviv"
+      style="left: 0px; min-width: 200px; max-width: 200px; text-align: left; top: 0px;"
     >
       Hello World!
       
