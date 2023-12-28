@@ -40,15 +40,15 @@
     "dev": "vite",
     "build": "svelte-package --input ./src && pnpm lint:package",
     "build:docs": "npm --prefix ./docs run build",
-    "deploy": "npm run build:docs && npx gh-pages -d docs/build",
-    "publish": "npm run build && npm publish --access=public",
+    "deploy": "pnpm build:docs && npx gh-pages -d docs/build",
+    "publish": "pnpm build && npm publish --access=public",
     "format": "prettier --write \"src/**/*.{js,ts,json,svelte}\"",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "lint": "eslint -c ./.eslintrc.json --fix \"src/**/*.{.js,.ts,svelte}\"",
     "lint:package": "publint --strict",
     "test": "vitest --run --coverage",
     "test:watch": "vitest",
-    "test:coverage": "vitest --run --coverage && open ./coverage/index.html"
+    "test:coverage": "pnpm test && open ./coverage/index.html"
   },
   "devDependencies": {
     "@sveltejs/package": "^2.2.4",
