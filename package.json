@@ -1,55 +1,62 @@
 {
   "name": "@svelte-plugins/tooltips",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "license": "MIT",
   "description": "A simple tooltip action and component designed for Svelte.",
   "author": "Kieran Boyle (https://github.com/dysfunc)",
-  "svelte": "./src/index.js",
-  "types": "./src/index.d.ts",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "type": "module",
-  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "svelte": "./dist/index.js",
+  "keywords": [
+    "components",
+    "tooltips",
+    "popover",
+    "action",
+    "svelte",
+    "ui",
+    "javascript"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svelte-plugins/tooltips.git"
+    "url": "https://github.com/svelte-plugins/tooltips.git"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "homepage": "https://github.com/svelte-plugins/tooltips",
   "bugs": "https://github.com/svelte-plugins/tooltips/issues",
-  "keywords": [
-    "tooltips",
-    "tooltip",
-    "actions",
-    "action",
-    "svelte",
-    "svelte component",
-    "javascript"
-  ],
-  "files": [
-    "/src",
-    "/dist"
-  ],
   "scripts": {
     "start": "npm --prefix ./docs install && vite & npm --prefix ./docs run dev",
     "dev": "vite",
-    "build": "vite build",
+    "build": "svelte-package --input ./src && pnpm lint:package",
     "build:docs": "npm --prefix ./docs run build",
     "deploy": "npm run build:docs && npx gh-pages -d docs/build",
     "publish": "npm run build && npm publish --access=public",
-    "lint": "eslint -c ./.eslintrc.json --fix \"src/**/*.{.js,svelte}\"",
-    "format": "prettier --write \"src/**/*.{js,json,svelte}\"",
+    "format": "prettier --write \"src/**/*.{js,ts,json,svelte}\"",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint": "eslint -c ./.eslintrc.json --fix \"src/**/*.{.js,.ts,svelte}\"",
+    "lint:package": "publint --strict",
     "test": "vitest --run --coverage",
     "test:watch": "vitest",
     "test:coverage": "vitest --run --coverage && open ./coverage/index.html"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.3",
-    "@babel/eslint-parser": "^7.23.3",
-    "@babel/preset-env": "^7.23.3",
-    "@babel/runtime": "^7.23.4",
+    "@sveltejs/package": "^2.2.4",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/svelte": "^4.0.5",
+    "@tsconfig/svelte": "^5.0.2",
+    "@typescript-eslint/parser": "^6.16.0",
     "@vitest/coverage-v8": "^0.34.6",
     "eslint": "^8.54.0",
     "eslint-plugin-svelte": "^2.35.1",
@@ -57,20 +64,17 @@
     "husky": "^6.0.0",
     "jsdom": "^23.0.0",
     "lint-staged": "^10.5.4",
+    "postcss": "^8.4.32",
     "prettier": "^3.1.0",
     "prettier-plugin-svelte": "^3.1.2",
+    "publint": "^0.2.7",
     "svelte": "^4.2.7",
+    "svelte-check": "^3.6.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.2",
     "vitest": "^0.34.6"
   },
-  "exports": {
-    ".": {
-      "types": "./src/index.d.ts",
-      "svelte": "./src/index.js",
-      "require": "./dist/index.js",
-      "module": "./dist/index.mjs",
-      "default": "./src/index.js"
-    }
+  "peerDependencies": {
+    "svelte": "^3.54.0 || ^4.0.0 || ^5.0.0-next.0"
   }
 }

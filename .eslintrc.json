@@ -13,6 +13,10 @@
   "ignorePatterns": ["**/*.snap.js"],
   "overrides": [
     {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser"
+    },
+    {
       "files": ["*.svelte"],
       "parser": "svelte-eslint-parser"
     }
