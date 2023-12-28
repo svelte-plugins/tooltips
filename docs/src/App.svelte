@@ -29,7 +29,7 @@
   </div>
 
   <div class="example">
-    <p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', hideOnClickOutside: true, action: 'click', position: 'right', theme: 'tooltip-theme' }}>right</b> when clicked. It will also hide itself once you click outside of the tooltip.</p>
+    <p>This tooltip should appear to the <b use:tooltip={{ content: 'Whoa! I appear to the right.', hideOnClickOutside: true, action: 'click', position: 'right', theme: 'tooltip-theme', show: true }}>right</b> when clicked. It will also hide itself once you click outside of the tooltip.</p>
 
     <Prism code={"<b use:tooltip={{ content: 'Whoa! I appear to the right.', position: 'right', action: 'click', theme: 'tooltip-theme' }}>right</b>"} />
 
@@ -81,7 +81,7 @@
   <h2>Examples using component</h2>
 
   <div class="example">
-    This tooltip should appear on the <Tooltip content="hello world!"><u>top</u></Tooltip> and use the content in the <code>title</code> attribute.
+    This tooltip should appear on the <Tooltip content="hello world!" action="click" show={!showTooltip}><u>top</u></Tooltip> and use the content in the <code>title</code> attribute.
   </div>
 
   <div class="example">

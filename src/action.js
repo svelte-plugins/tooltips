@@ -54,10 +54,6 @@ export const tooltip = (element, props) => {
     if (element !== null) {
       removeListeners();
 
-      if (config.show) {
-        onShow();
-      }
-
       if (action === 'click') {
         element.addEventListener('click', onClick);
 
@@ -89,6 +85,10 @@ export const tooltip = (element, props) => {
   };
 
   addListeners();
+
+  if (config.show) {
+    setTimeout(onShow, 0);
+  }
 
   return {
     destroy() {

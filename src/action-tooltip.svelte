@@ -142,7 +142,7 @@
   $: isComponent = typeof content === 'object';
   $: tooltipRef && show
     ? setTimeout(() => (visible = true), animationDelay)
-    : (visible = false);
+    : setTimeout(() => (visible = false), animationDelay);
 </script>
 
 {#if content}

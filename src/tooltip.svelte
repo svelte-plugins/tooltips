@@ -220,7 +220,7 @@
 
   $: isComponent = typeof content === 'object';
   $: action, addListeners();
-  $: tooltipRef && show ? onShow() : onHide();
+  $: tooltipRef && show ? setTimeout(onShow, 0) : setTimeout(onHide, 0);
 </script>
 
 {#if content}
