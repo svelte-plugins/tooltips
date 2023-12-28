@@ -6,8 +6,7 @@
     computeTooltipPosition,
     formatVariableKey,
     getMinWidth,
-    isElementInViewport,
-    onClickOutside
+    isElementInViewport
   } from './helpers';
 
   import { inverse } from './constants';
@@ -83,6 +82,19 @@
     left: 0
   };
 
+  // @ts-ignore
+  const detect = ({ target }) => {
+    if (
+      containerRef !== target &&
+      tooltipRef !== target &&
+      // @ts-ignore
+      !containerRef?.parentNode.contains(target) &&
+      !tooltipRef?.contains(target)
+    ) {
+      onHide();
+    }
+  };
+
   const onClick = () => {
     if (visible) {
       onHide();
@@ -131,7 +143,10 @@
         containerRef.addEventListener('click', onClick);
 
         if (hideOnClickOutside) {
-          onClickOutside(containerRef, onHide);
+          document.addEventListener('click', detect, {
+            passive: true,
+            capture: true
+          });
         }
       }
 
@@ -143,6 +158,10 @@
   };
 
   const removeListeners = () => {
+    if (hideOnClickOutside) {
+      document.removeEventListener('click', detect);
+    }
+
     if (containerRef !== null) {
       containerRef.removeEventListener('click', onClick);
       containerRef.removeEventListener('mouseenter', onShow);

@@ -1,7 +1,12 @@
-import Tooltip from './action/action-tooltip.svelte';
+import { TooltipActionProps } from './action-tooltip';
 
-interface TooltipProps {
-  [key: string]: any;
+interface ActionProps extends TooltipActionProps {
+  /**
+   * Whether to hide the tooltip when clicking outside.
+   * Only works when action is set to 'click'.
+   * @default false
+   */
+  hideOnClickOutside?: boolean;
 }
 
 interface TooltipActions {
@@ -10,5 +15,5 @@ interface TooltipActions {
 
 export function tooltip(
   element: HTMLElement,
-  props: TooltipProps
+  props: ActionProps
 ): TooltipActions;

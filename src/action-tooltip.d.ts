@@ -44,13 +44,6 @@ export interface TooltipActionProps {
   delay?: number;
 
   /**
-   * Whether to hide the tooltip when clicking outside.
-   * Only works when action is set to 'click'.
-   * @default false
-   */
-  hideOnClickOutside?: boolean;
-
-  /**
    * The maximum width of the tooltip.
    * @default 200
    */

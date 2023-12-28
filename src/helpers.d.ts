@@ -22,8 +22,3 @@ export declare function computeTooltipPosition(
   position: string,
   coords: TooltipCoords
 ): TooltipCoords;
-
-export declare function onClickOutside(
-  node: HTMLElement,
-  callback: () => void
-): { destroy: () => void };

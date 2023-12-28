@@ -1,10 +1,15 @@
 import Tooltip from './action-tooltip.svelte';
-import { onClickOutside } from './helpers';
 
 export const tooltip = (element, props) => {
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
+
+  const detect = ({ target }) => {
+    if (target && !target.classList.contains('tooltip')) {
+      onHide();
+    }
+  };
 
   const config = {
     ...props,
@@ -18,7 +23,12 @@ export const tooltip = (element, props) => {
 
   const onClick = () => {
     if (component) {
-      onHide();
+      if (
+        action !== 'click' ||
+        (action === 'click' && !config.hideOnClickOutside)
+      ) {
+        onHide();
+      }
     } else {
       onShow();
     }
@@ -52,7 +62,10 @@ export const tooltip = (element, props) => {
         element.addEventListener('click', onClick);
 
         if (config.hideOnClickOutside) {
-          onClickOutside(element, onHide);
+          document.addEventListener('click', detect, {
+            passive: true,
+            capture: true
+          });
         }
       }
 
@@ -64,6 +77,10 @@ export const tooltip = (element, props) => {
   };
 
   const removeListeners = () => {
+    if (config.hideOnClickOutside) {
+      document.removeEventListener('click', detect);
+    }
+
     if (element !== null) {
       element.removeEventListener('click', onClick);
       element.removeEventListener('mouseenter', onShow);

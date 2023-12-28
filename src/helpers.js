@@ -143,19 +143,3 @@ export const computeTooltipPosition = (
 
   return coords;
 };
-
-export const onClickOutside = (node, callback) => {
-  const detect = ({ target }) => {
-    if (!node.contains(target)) {
-      callback();
-    }
-  };
-
-  document.addEventListener('click', detect, { passive: true, capture: true });
-
-  return {
-    destroy() {
-      document.removeEventListener('click', detect);
-    }
-  };
-};
