@@ -1,6 +1,6 @@
-import type { SvelteComponentTyped } from 'svelte';
+import { SvelteComponent } from 'svelte';
 
-export interface ComponentProps {
+export interface TooltipProps {
   /**
    * The action to trigger the tooltip
    * @default 'hover'
@@ -20,12 +20,6 @@ export interface ComponentProps {
   animation?: string;
 
   /**
-   * The animation's delay of the tooltip.
-   * @default 200
-   */
-  delay?: number;
-
-  /**
    * Whether to show the arrow of the tooltip.
    * @default true
    */
@@ -42,6 +36,19 @@ export interface ComponentProps {
    * @default ''
    */
   content?: string;
+
+  /**
+   * The animation's delay of the tooltip.
+   * @default 200
+   */
+  delay?: number;
+
+  /**
+   * Whether to hide the tooltip when clicking outside.
+   * Only works when action is set to 'click'.
+   * @default false
+   */
+  hideOnClickOutside?: boolean;
 
   /**
    * The maximum width of the tooltip.
@@ -68,20 +75,20 @@ export interface ComponentProps {
   style?: undefined;
 
   /**
-   * The target element to bind the tooltip to.
-   * @default null
-   */
-  targetElement?: HTMLElement | null,
-
-  /**
    * The theme of the tooltip.
    * @default ''
    */
   theme?: string;
 }
 
-export default class Component extends SvelteComponentTyped<
-  ComponentProps,
-  Record<string, any>,
-  { default: {} }
+export interface TooltipEvents {}
+
+export interface TooltipSlots {
+  default: {};
+}
+
+export default class Tooltip extends SvelteComponent<
+  TooltipProps,
+  TooltipEvents,
+  TooltipSlots
 > {}

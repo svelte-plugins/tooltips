@@ -1,18 +1,16 @@
 {
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": ["src/**/*.d.ts"],
+  "exclude": ["node_modules/*", "src/**/*.js", "src/**/*.test.js"],
   "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "5.0",
     "importsNotUsedAsValues": "error",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "moduleResolution": "node",
+    "sourceMap": true,
     "strict": true,
-    "types": ["svelte"],
-    "paths": {
-      "@svelte-plugins/tooltips": ["./src"],
-      "@svelte-plugins/tooltips/*": ["./src/*"]
-    }
-  },
-  "include": ["src"]
+    "types": ["svelte"]
+  }
 }
