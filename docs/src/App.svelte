@@ -4,6 +4,11 @@
   import ComponentAsContent from './content.svelte';
 
   let showTooltip = false;
+  let autoHideTooltip = true;
+
+  setTimeout(() => {
+    autoHideTooltip = false;
+  }, 5000);
 </script>
 
 <main>
@@ -81,7 +86,7 @@
   <h2>Examples using component</h2>
 
   <div class="example">
-    This tooltip should appear on the <Tooltip content="hello world!" action="click" show={!showTooltip}><u>top</u></Tooltip> and use the content in the <code>title</code> attribute.
+    This tooltip should appear on the <Tooltip content="hello world!" action="click" show={autoHideTooltip}><u>top</u></Tooltip> and use the content in the <code>title</code> attribute. It will auto-hide in 5 seconds.
   </div>
 
   <div class="example">
