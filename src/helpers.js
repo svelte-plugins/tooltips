@@ -66,6 +66,11 @@ export const computeTooltipPosition = (
     return coords;
   }
 
+  const tooltipRect = tooltipRef.getBoundingClientRect();
+  const containerRect = containerRef.getBoundingClientRect();
+  const containerPosition = window.getComputedStyle(containerRef).position;
+  const containerStyle = window.getComputedStyle(containerRef);
+
   let cumulativeOffsetTop = 0;
   let cumulativeOffsetLeft = 0;
 
@@ -75,29 +80,49 @@ export const computeTooltipPosition = (
 
   let currentElement = containerRef;
 
-  while (currentElement !== document.body) {
+  while (currentElement && currentElement !== document.body) {
     const computedStyle = window.getComputedStyle(currentElement);
     const elementPosition = computedStyle.position;
+    const currentRect = currentElement.getBoundingClientRect();
 
+    // if (elementPosition === 'static') {
+    //   currentElement = currentElement.parentElement;
+    //   continue;
+    // }
+
+    // console.log()
     if (elementPosition === 'fixed') {
       fixedOffsetTop +=
-        currentElement.getBoundingClientRect().top + window.scrollY;
+        currentRect.top + window.scrollY;
       fixedOffsetLeft +=
-        currentElement.getBoundingClientRect().left + window.scrollX;
+        currentRect.left + window.scrollX;
     } else if (elementPosition === 'sticky') {
-      stickyOffsetTop += currentElement.getBoundingClientRect().top;
+      stickyOffsetTop += currentRect.top;
       fixedOffsetLeft +=
-        currentElement.getBoundingClientRect().left + window.scrollX;
-    } else if (
-      elementPosition === 'absolute' ||
-      elementPosition === 'relative'
-    ) {
-      cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
-      cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;
+        currentRect.left + window.scrollX;
+    } else if (elementPosition === 'absolute' || elementPosition === 'relative') {
+      if (elementPosition === 'absolute') {
+        cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
+        cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;
+      }
 
       if (elementPosition === 'relative') {
         cumulativeOffsetTop -= currentElement.offsetTop;
         cumulativeOffsetLeft -= currentElement.offsetLeft;
+
+        if (position === 'bottom') {
+          cumulativeOffsetTop += containerRect.height;
+        }
+
+        if (position === 'right') {
+          cumulativeOffsetLeft -= containerRect.width;
+        }
+
+        if (containerPosition === 'absolute') {
+          if (position === 'right') {
+            cumulativeOffsetLeft += containerRect.width;
+          }
+        }
       }
     }
 
@@ -105,15 +130,18 @@ export const computeTooltipPosition = (
 
     if (transform && transform !== 'none') {
       const transformMatrix = new DOMMatrix(transform);
-      cumulativeOffsetTop -= transformMatrix.m42;
-      cumulativeOffsetLeft -= transformMatrix.m41;
+
+      if (elementPosition === 'relative' || elementPosition === 'absolute') {
+        cumulativeOffsetTop -= transformMatrix.m42;
+        cumulativeOffsetLeft -= transformMatrix.m41;
+      } else {
+        cumulativeOffsetTop -= currentElement.offsetTop + transformMatrix.m42;
+        cumulativeOffsetLeft -= currentElement.offsetLeft + transformMatrix.m41;
+      }
     }
 
     currentElement = currentElement.parentElement;
   }
-
-  const containerRect = containerRef.getBoundingClientRect();
-  const tooltipRect = tooltipRef.getBoundingClientRect();
 
   let finalTop =
     containerRect.top + cumulativeOffsetTop + stickyOffsetTop - fixedOffsetTop;
