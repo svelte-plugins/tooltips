@@ -125,6 +125,8 @@
     if (component) {
       component.$destroy();
       component = null;
+      visible = false;
+      show = false;
     }
   });
 
@@ -141,8 +143,8 @@
 
   $: isComponent = typeof content === 'object';
   $: tooltipRef && show
-    ? setTimeout(() => (visible = true), animationDelay)
-    : setTimeout(() => (visible = false), animationDelay);
+    ? setTimeout(() => (visible = true), 0)
+    : (visible = false);
 </script>
 
 {#if content}

@@ -85,6 +85,7 @@
   // @ts-ignore
   const detect = ({ target }) => {
     if (
+      hideOnClickOutside &&
       containerRef !== target &&
       tooltipRef !== target &&
       // @ts-ignore

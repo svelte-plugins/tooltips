@@ -6,7 +6,7 @@ export const tooltip = (element, props) => {
   let action = props?.action || element.getAttribute('action') || 'hover';
 
   const detect = ({ target }) => {
-    if (target && !target.classList.contains('tooltip')) {
+    if (config.hideOnClickOutside && target && !target.classList.contains('tooltip')) {
       onHide();
     }
   };
@@ -24,8 +24,7 @@ export const tooltip = (element, props) => {
   const onClick = () => {
     if (component) {
       if (
-        action !== 'click' ||
-        (action === 'click' && !config.hideOnClickOutside)
+        !(action === 'click' && config.hideOnClickOutside)
       ) {
         onHide();
       }
