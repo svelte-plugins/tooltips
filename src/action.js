@@ -4,9 +4,10 @@ export const tooltip = (element, props) => {
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
+  const hideOnClickOutside = props?.hideOnClickOutside || element.getAttribute('hideOnClickOutside') || false;
 
   const detect = ({ target }) => {
-    if (config.hideOnClickOutside && target && !target.classList.contains('tooltip')) {
+    if (hideOnClickOutside && target && !target.classList.contains('tooltip')) {
       onHide();
     }
   };
@@ -16,6 +17,10 @@ export const tooltip = (element, props) => {
     targetElement: element
   };
 
+  if (config.hideOnClickOutside) {
+    delete config.hideOnClickOutside;
+  }
+
   if (title) {
     element.removeAttribute('title');
     config.content = title;
@@ -24,7 +29,7 @@ export const tooltip = (element, props) => {
   const onClick = () => {
     if (component) {
       if (
-        !(action === 'click' && config.hideOnClickOutside)
+        !(action === 'click' && hideOnClickOutside)
       ) {
         onHide();
       }
@@ -56,7 +61,7 @@ export const tooltip = (element, props) => {
       if (action === 'click') {
         element.addEventListener('click', onClick);
 
-        if (config.hideOnClickOutside) {
+        if (hideOnClickOutside) {
           document.addEventListener('click', detect, {
             passive: true,
             capture: true
@@ -72,7 +77,7 @@ export const tooltip = (element, props) => {
   };
 
   const removeListeners = () => {
-    if (config.hideOnClickOutside) {
+    if (hideOnClickOutside) {
       document.removeEventListener('click', detect);
     }
 
