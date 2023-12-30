@@ -69,7 +69,7 @@
           theme: 'tooltip-theme',
           show: true
         }}>right</b
-      > when clicked. It will also hide itself once you click outside of the tooltip.
+      > on load and when clicked. It will also hide itself once you click outside of the tooltip.
     </p>
 
     <Prism
@@ -229,11 +229,12 @@
         position="right"
         action="click"
         hideOnClickOutside
+        show={true}
         theme="tooltip-theme"
       >
         <b>right</b>
       </Tooltip>
-      when clicked. It will also hide itself once you click outside of the tooltip.
+      on load and when clicked. It will also hide itself once you click outside of the tooltip.
     </p>
     <Prism
       showLineNumbers={true}
@@ -243,6 +244,7 @@
   position="right"
   action="click"
   hideOnClickOutside
+  show={true}
   theme="tooltip-theme">
   <b>right</b>
 </Tooltip>
