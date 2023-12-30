@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/svelte-plugins/tooltips.git"
+    "url": "git+https://github.com/svelte-plugins/tooltips.git"
   },
   "files": [
     "dist",
