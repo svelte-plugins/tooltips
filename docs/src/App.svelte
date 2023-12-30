@@ -5,7 +5,7 @@
 
   let showTooltip = false;
   let autoHideTooltip = true;
-  ``;
+
   setTimeout(() => {
     autoHideTooltip = false;
   }, 5000);
@@ -408,18 +408,11 @@
   <section>
     <h2>Playground</h2>
   </section>
-  <section class="relative-with-offset">
-    <p>
+  <div>
+    <p class="relative-with-offset">
       Mouse over <strong
         use:tooltip={{ content: 'Hello world', position: 'left' }}>me</strong
-      > to see a tooltip in the correct position.
-    </p>
-  </section>
-  <div class="relative-with-offset">
-    <p>
-      Mouse over <strong
-        use:tooltip={{ content: 'Hello world', position: 'left' }}>me</strong
-      > to see a tooltip in the wrong position.
+      > to see a left positioned tooltip with relative offset parent
     </p>
   </div>
   <div class="relative-with-offset">
@@ -427,7 +420,7 @@
     <strong use:tooltip={{ content: 'Hello world', position: 'bottom' }}
       >me</strong
     >
-    <p>to see a tooltip in the wrong position.</p>
+    <p>to see a bottom positioned tooltip with relative offset parent.</p>
   </div>
   <div class="relative-with-offset">
     <p>Mouse over</p>
@@ -435,7 +428,7 @@
       class="absolute-child"
       use:tooltip={{ content: 'Hello world', position: 'top' }}>me</strong
     >
-    <p>to see a tooltip in the wrong position.</p>
+    <p>to see a top positioned tooltip.</p>
   </div>
   <p>A bunch of paragraphs.</p>
   <p>A bunch of paragraphs.</p>
@@ -445,11 +438,10 @@
   <p>A bunch of paragraphs.</p>
   <div class="relative-with-offset">
     <p>
-      Mouse over <strong
+      Mouse <strong
         class="absolute-child"
-        use:tooltip={{ content: 'Hello world', position: 'right' }}>me</strong
-      > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to see a tooltip in
-      the wrong position.
+        use:tooltip={{ content: 'Hello world', position: 'right' }}>over</strong>
+      this relative parent with absolute child.
     </p>
   </div>
   <p>A bunch of paragraphs.</p>
@@ -465,19 +457,19 @@
   <p>A bunch of paragraphs.</p>
   <p>A bunch of paragraphs.</p>
 </main>
-<p>Mouse over <strong use:tooltip={{ content: 'Hello world', position: 'left' }}>me</strong> to see a tooltip in the correct position.</p>
+<p>Mouse over <strong use:tooltip={{ content: 'Hello world', position: 'left' }}>me</strong> static tooltip element.</p>
 <div class="relative-with-offset">
-	<p>Mouse over <strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'top' }}>me</strong> to see a tooltip in the wrong position.</p>
+	<p>Mouse over <strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'top' }}>me</strong> with relative offset parent and absolute child.</p>
 </div>
 <div class="relative-with-offset">
 	<p>Mouse over</p>
-	<strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'bottom' }}>me</strong>
-	<p>to see a tooltip in the wrong position.</p>
+	<strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'bottom' }}>this</strong>
+	<p>relative parent with offset and absolute child.</p>
 </div>
 <div class="relative-with-offset">
 	<p>Mouse over</p>
 	<strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'right' }}>me</strong>
-	<p>to see a tooltip in the wrong position.</p>
+	<p>relative parent with offset and absolute child.</p>
 </div>
 <p>A bunch of paragraphs.</p>
 <p>A bunch of paragraphs.</p>
@@ -486,7 +478,7 @@
 <p>A bunch of paragraphs.</p>
 <p>A bunch of paragraphs.</p>
 <div class="relative">
-	<p>Mouse over <strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'left' }}>me</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to see a tooltip in the wrong position.</p>
+	<p>Mouse over <strong class="absolute-child" use:tooltip={{ content: 'Hello world', position: 'right' }}>me</strong> with relative parent (no offset) and absolute child.</p>
 </div>
 <p>A bunch of paragraphs.</p>
 <p>A bunch of paragraphs.</p>
@@ -497,7 +489,7 @@
 <p>A bunch of paragraphs.</p>
 <div>
   <p class="transform">
-    This tooltip is using transform on the element - <u
+   Tooltip is using a CSS transform on the tooltip element - show <u
       title="hello world!"
       action="click"
       use:tooltip>top</u
@@ -512,7 +504,7 @@
 
 <div class="transform">
   <p>
-    This tooltips parent is using a transform -  <u
+    Tooltip parent is using a CSS transform - show <u
       title="hello world!"
       action="click"
       use:tooltip>top</u
@@ -528,7 +520,7 @@
 
 <div class="relative transform">
   <p>
-    This tooltips parent is relative using a transform -  <u
+    Tooltip parent is relative and using a CSS transform - show <u
       title="hello world!"
       action="click"
       use:tooltip>top</u
@@ -542,7 +534,7 @@
 
 <div class="transform" style="position: absolute; left: 300px;">
   <p>
-    This tooltips parent is absolute using a transform -  <u
+    Tooltip parent is absolute and using a CSS transform - show <u
       title="hello world!"
       action="click"
       use:tooltip>top</u
