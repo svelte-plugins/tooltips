@@ -12,6 +12,10 @@ yarn add -D @svelte-plugins/tooltips
 # or with NPM
 
 npm i -D @svelte-plugins/tooltips
+
+# or with PNPM
+
+pnpm i -D @svelte-plugins/tooltips
 ```
 
 ## Using the Tooltip component
@@ -40,25 +44,26 @@ Checkout out my <u use:tooltip={{ content: 'Hello World!' }}>tooltip</u>
 ## API
 
 ### Props
-| Prop         | Description                                                         | Value                                           |
-| :----------- | :------------------------------------------------------------------ | :---------------------------------------------- |
-| action       | The action that triggers the tooltip (hover | click | prop)         | `string` (default: `hover`)                     |
-| animation    | The animation to apply to the tooltip                               | `string` (default: ``)                          |
-| delay        | The animation delay in milliseconds to apply to the tooltip         | `number` (default: `200`)                       |
-| arrow        | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
-| autoPosition | Adjust tooltip position if viewport clipping occurs                 | `string` (default: `false`)                     |
-| content      | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
-| maxWidth     | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
-| position     | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
-| theme        | The CSS theme class name                                            | `string` (default: ``)                          |
-| show         | Allows you to manually control the tooltip visibility               | `boolean` (default: `false`)                    |
-| style        | The object containing theme variable overrides                      | `object` (default: `null`)                      |
+| Prop               | Description                                                         | Value                                         |
+| :----------------- | :------------------------------------------------------------------ | :---------------------------------------------- |
+| action             | The action that triggers the tooltip (hover | click | prop)         | `string` (default: `hover`)                     |
+| animation          | The animation to apply to the tooltip                               | `string` (default: ``)                          |
+| arrow              | If `false`, the tooltip arrow will not be shown.                    | `boolean` (default: `true`)                     |
+| autoPosition       | Adjust tooltip position if viewport clipping occurs                 | `boolean` (default: `false`)                    |
+| content            | The string or object containing componentref and props              | `string` | `object` component (default: ``)     |
+| delay              | The animation delay in milliseconds to apply to the tooltip         | `number` (default: `200`)                       |
+| hideOnOutsideClick | Hides a tooltip when an outside click occurs                        | `boolean` (default: `false`)                    |
+| maxWidth           | The max allowable width of the tooltip content                      | `number` (default: `200`)                       |
+| position           | The position where the tooltip should appear relative to its parent | `string` (default: `top`)                       |
+| show               | Allows you to manually control the tooltip visibility               | `boolean` (default: `false`)                    |
+| style              | The object containing theme variable overrides                      | `object` (default: `null`)                      |
+| theme              | The CSS theme class name                                            | `string` (default: ``)                          |
 
 #### Using components as content
-| Prop              | Description                                                    | Value                               |
-| :-----------------| :------------------------------------------------------------- | :---------------------------------- |
-| content.component | Svelte component                                               | `component` (default: `null`)       |
-| content.props     | Any component propeties                                        | `object` (default: `null`)          |
+| Prop              | Description                                                          | Value                                           |
+| :-----------------| :------------------------------------------------------------------- | :---------------------------------------------- |
+| content.component | Svelte component                                                     | `component` (default: `null`)                   |
+| content.props     | Any component propeties                                              | `object` (default: `null`)                      |
 
 
 ```svelte

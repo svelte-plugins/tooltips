@@ -19,7 +19,8 @@
 !.storybook
 
 # generated
-.vercel
+/.vercel
+/.package-lock.json
 /node_modules
 /dist
 

@@ -4,11 +4,22 @@ export const tooltip = (element, props) => {
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
+  const hideOnClickOutside = props?.hideOnClickOutside || element.getAttribute('hideOnClickOutside') || false;
+
+  const detect = ({ target }) => {
+    if (hideOnClickOutside && target && !target.classList.contains('tooltip')) {
+      onHide();
+    }
+  };
 
   const config = {
     ...props,
     targetElement: element
   };
+
+  if (config.hideOnClickOutside) {
+    delete config.hideOnClickOutside;
+  }
 
   if (title) {
     element.removeAttribute('title');
@@ -17,7 +28,11 @@ export const tooltip = (element, props) => {
 
   const onClick = () => {
     if (component) {
-      onHide();
+      if (
+        !(action === 'click' && hideOnClickOutside)
+      ) {
+        onHide();
+      }
     } else {
       onShow();
     }
@@ -43,12 +58,15 @@ export const tooltip = (element, props) => {
     if (element !== null) {
       removeListeners();
 
-      if (config.show) {
-        onShow();
-      }
-
       if (action === 'click') {
         element.addEventListener('click', onClick);
+
+        if (hideOnClickOutside) {
+          document.addEventListener('click', detect, {
+            passive: true,
+            capture: true
+          });
+        }
       }
 
       if (action === 'hover') {
@@ -56,9 +74,13 @@ export const tooltip = (element, props) => {
         element.addEventListener('mouseleave', onHide);
       }
     }
-  }
+  };
 
   const removeListeners = () => {
+    if (hideOnClickOutside) {
+      document.removeEventListener('click', detect);
+    }
+
     if (element !== null) {
       element.removeEventListener('click', onClick);
       element.removeEventListener('mouseenter', onShow);
@@ -67,6 +89,10 @@ export const tooltip = (element, props) => {
   };
 
   addListeners();
+
+  if (config.show) {
+    setTimeout(onShow, 0);
+  }
 
   return {
     destroy() {
@@ -77,4 +103,4 @@ export const tooltip = (element, props) => {
       }
     }
   };
-}
+};
