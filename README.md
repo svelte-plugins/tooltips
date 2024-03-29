@@ -7,15 +7,15 @@ Try it in the [Svelte REPL](https://svelte.dev/repl/e63e262a91834400aa567b9b0d20
 ## Install
 
 ```bash
-yarn add -D @svelte-plugins/tooltips
+yarn add @svelte-plugins/tooltips
 
 # or with NPM
 
-npm i -D @svelte-plugins/tooltips
+npm i @svelte-plugins/tooltips
 
 # or with PNPM
 
-pnpm i -D @svelte-plugins/tooltips
+pnpm i @svelte-plugins/tooltips
 ```
 
 ## Using the Tooltip component
