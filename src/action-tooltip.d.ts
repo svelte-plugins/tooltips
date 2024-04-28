@@ -5,7 +5,7 @@ export interface TooltipActionProps {
    * The action to trigger the tooltip
    * @default 'hover'
    */
-  action: 'hover' | 'click' | 'prop' | string;
+  action?: 'hover' | 'click' | 'prop' | string;
 
   /**
    * The alignment of the tooltip.

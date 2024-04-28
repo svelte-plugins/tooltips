@@ -85,12 +85,6 @@ export const computeTooltipPosition = (
     const elementPosition = computedStyle.position;
     const currentRect = currentElement.getBoundingClientRect();
 
-    // if (elementPosition === 'static') {
-    //   currentElement = currentElement.parentElement;
-    //   continue;
-    // }
-
-    // console.log()
     if (elementPosition === 'fixed') {
       fixedOffsetTop +=
         currentRect.top + window.scrollY;
