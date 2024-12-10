@@ -1,10 +1,14 @@
+import { mount, unmount } from 'svelte';
 import Tooltip from './action-tooltip.svelte';
 
 export const tooltip = (element, props) => {
   let component = null;
   let title = element.getAttribute('title');
   let action = props?.action || element.getAttribute('action') || 'hover';
-  const hideOnClickOutside = props?.hideOnClickOutside || element.getAttribute('hideOnClickOutside') || false;
+  const hideOnClickOutside =
+    props?.hideOnClickOutside ||
+    element.getAttribute('hideOnClickOutside') ||
+    false;
 
   const detect = ({ target }) => {
     if (hideOnClickOutside && target && !target.classList.contains('tooltip')) {
@@ -14,7 +18,7 @@ export const tooltip = (element, props) => {
 
   const config = {
     ...props,
-    targetElement: element
+    targetElement: element,
   };
 
   if (config.hideOnClickOutside) {
@@ -28,9 +32,7 @@ export const tooltip = (element, props) => {
 
   const onClick = () => {
     if (component) {
-      if (
-        !(action === 'click' && hideOnClickOutside)
-      ) {
+      if (!(action === 'click' && hideOnClickOutside)) {
         onHide();
       }
     } else {
@@ -40,16 +42,13 @@ export const tooltip = (element, props) => {
 
   const onShow = () => {
     if (!component) {
-      component = new Tooltip({
-        target: element,
-        props: config
-      });
+      component = mount(Tooltip, { target: element , props: config});
     }
   };
 
   const onHide = () => {
     if (component) {
-      component.$destroy();
+      unmount(component);
       component = null;
     }
   };

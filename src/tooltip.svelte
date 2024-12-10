@@ -11,44 +11,21 @@
 
   import { inverse } from './constants';
 
-  /** @type {'hover' | 'click' | 'prop' | string} */
-  export let action = 'hover';
-
-  /** @type {string | {component: any, props?: Record<string, any>}} */
-  export let content = '';
-
-  /** @type {'left' | 'center' | 'right' | string} */
-  export let align = 'left';
-
-  /** @type {'top' | 'bottom' | 'left' | 'right' | string} */
-  export let position = 'top';
-
-  /** @type {number} */
-  export let maxWidth = 200;
-
-  /** @type {{ [x: string]: any; } | null} */
-  export let style = null;
-
-  /** @type {string} */
-  export let theme = '';
-
-  /** @type {string} */
-  export let animation = '';
-
-  /** @type {boolean} */
-  export let hideOnClickOutside = false;
-
-  /** @type {number} */
-  export let delay = 200;
-
-  /** @type {boolean} */
-  export let arrow = true;
-
-  /** @type {boolean} */
-  export let autoPosition = false;
-
-  /** @type {boolean} */
-  export let show = false;
+  let {
+    action = 'hover',
+    children,
+    content = '',
+    align = 'left',
+    position = 'top',
+    maxWidth = 200,
+    theme = '',
+    animation = '',
+    hideOnClickOutside = false,
+    delay = 200,
+    arrow = true,
+    autoPosition = false,
+    style = null,
+    show = false } = $props();
 
   /** @type {HTMLSpanElement | null} */
   let containerRef = null;
@@ -57,7 +34,7 @@
   let tooltipRef = null;
 
   /** @type {number} */
-  let minWidth = 0;
+  let minWidth = $state(0);
 
   /** @type {{ $destroy: () => void; } | null} */
   let component = null;
@@ -66,21 +43,21 @@
   let initialPosition = position;
 
   /** @type {string | null} */
-  let animationEffect = null;
+  let animationEffect = $state(null);
 
   /** @type {number | null} */
   let timer = null;
 
   /** @type {boolean} */
-  let visible = false;
+  let visible = $state(false);
 
   /** @type {any} */
-  let coords = {
+  let coords = $state({
     bottom: 0,
     top: 0,
     right: 0,
     left: 0
-  };
+  });
 
   // @ts-ignore
   const detect = ({ target }) => {
@@ -219,14 +196,21 @@
     }
   };
 
-  $: isComponent = typeof content === 'object';
-  $: action, addListeners();
-  $: tooltipRef && show ? setTimeout(onShow, 0) : setTimeout(onHide, 0);
+  let isComponent = $derived(typeof content === 'object');
+  $effect(() => {
+    if(action)
+      addListeners();
+  });
+
+  $effect(() => {
+    tooltipRef && show ? setTimeout(onShow, 0) : setTimeout(onHide, 0);
+  });
+
 </script>
 
 {#if content}
   <span bind:this={containerRef} class="tooltip-container">
-    <slot />
+    {@render children?.()}
   </span>
   <div
     bind:this={tooltipRef}
@@ -240,7 +224,7 @@
     {/if}
   </div>
 {:else}
-  <slot />
+  {@render children?.()}
 {/if}
 
 <svelte:window on:resize={onHandleResize} />

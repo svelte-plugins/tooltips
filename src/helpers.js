@@ -86,15 +86,15 @@ export const computeTooltipPosition = (
     const currentRect = currentElement.getBoundingClientRect();
 
     if (elementPosition === 'fixed') {
-      fixedOffsetTop +=
-        currentRect.top + window.scrollY;
-      fixedOffsetLeft +=
-        currentRect.left + window.scrollX;
+      fixedOffsetTop += currentRect.top + window.scrollY;
+      fixedOffsetLeft += currentRect.left + window.scrollX;
     } else if (elementPosition === 'sticky') {
       stickyOffsetTop += currentRect.top;
-      fixedOffsetLeft +=
-        currentRect.left + window.scrollX;
-    } else if (elementPosition === 'absolute' || elementPosition === 'relative') {
+      fixedOffsetLeft += currentRect.left + window.scrollX;
+    } else if (
+      elementPosition === 'absolute' ||
+      elementPosition === 'relative'
+    ) {
       if (elementPosition === 'absolute') {
         cumulativeOffsetTop -= parseFloat(computedStyle.top) || 0;
         cumulativeOffsetLeft -= parseFloat(computedStyle.left) || 0;

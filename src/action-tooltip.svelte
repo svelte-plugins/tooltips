@@ -1,6 +1,6 @@
 <script>
   // @ts-check
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, mount, unmount } from 'svelte';
 
   import {
     computeTooltipPosition,
@@ -11,59 +11,36 @@
 
   import { inverse } from './constants';
 
-  /** @type {HTMLElement | null} */
-  export let targetElement = null;
-
-  /** @type {'hover' | 'click' | 'prop' | string} */
-  export let action = 'hover';
-
-  /** @type {string | {component: any, props?: Record<string, any>}} */
-  export let content = '';
-
-  /** @type {'left' | string} */
-  export let align = 'left';
-
-  /** @type {'top' | string} */
-  export let position = 'top';
-
-  /** @type {number} */
-  export let maxWidth = 200;
-
-  /** @type {Record<string, string> | null} */
-  export let style = null;
-
-  /** @type {string} */
-  export let theme = '';
-
-  /** @type {string} */
-  export let animation = '';
-
-  /** @type {number} */
-  export let delay = 200;
-
-  /** @type {boolean} */
-  export let arrow = true;
-
-  /** @type {boolean} */
-  export let autoPosition = false;
-
-  /** @type {boolean} */
-  export let show = false;
+  let {
+    targetElement = null,
+    action = 'hover',
+    content = '',
+    align = 'left',
+    position = 'top',
+    maxWidth = 200,
+    style = null,
+    theme = '',
+    animation = '',
+    delay = 200,
+    arrow = true,
+    autoPosition = false,
+    show = false
+  } = $props();
 
   /** @type {HTMLDivElement | null} */
   let tooltipRef = null;
 
   /** @type {number} */
-  let minWidth = 0;
+  let minWidth = $state(0);
 
   /** @type {any} */
   let component = null;
 
   /** @type {string | null} */
-  let animationEffect = null;
+  let animationEffect = $state(null);
 
   /** @type {boolean} */
-  let visible = false;
+  let visible = $state(false);
 
   /** @type {any} */
   let coords = {
@@ -79,23 +56,10 @@
     if (tooltipRef !== null) {
       if (isComponent && !component) {
         // @ts-ignore
-        component = new content.component({
-          target: tooltipRef,
-          // @ts-ignore
-          props: { action, ...content.props }
-        });
+        component = mount(content.component, { target: tooltipRef, props: { action, ...content.props }});
       }
 
       minWidth = getMinWidth(tooltipRef, maxWidth);
-
-      if (style && typeof style === 'object') {
-        for (let prop in style) {
-          const key = formatVariableKey(prop);
-          const value = style[prop];
-
-          tooltipRef.style.setProperty(`--tooltip-${key}`, value);
-        }
-      }
     }
 
     if (
@@ -119,11 +83,12 @@
     }
 
     setTimeout(() => (visible = true), animationDelay);
+
   });
 
   onDestroy(() => {
     if (component) {
-      component.$destroy();
+      unmount(component);
       component = null;
       visible = false;
       show = false;
@@ -141,12 +106,25 @@
     }
   };
 
-  $: isComponent = typeof content === 'object';
-  $: tooltipRef && show
-    ? setTimeout(() => (visible = true), 0)
-    : (visible = false);
-</script>
+  let isComponent = $derived(typeof content === 'object');
+  $effect(() => {
+    tooltipRef && show ? setTimeout(() => (visible = true), 0) : (visible = false);
+  });
+  $effect(() => {
+    if(visible) {
+      console.log('t');
+      if (style && typeof style === 'object') {
+        for (let prop in style) {
+          const key = formatVariableKey(prop);
+          const value = style[prop];
 
+          tooltipRef.style.setProperty(`--tooltip-${key}`, value);
+        }
+      }
+    }
+  })
+
+</script>
 {#if content}
   <div
     bind:this={tooltipRef}
