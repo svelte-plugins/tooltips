@@ -1,6 +1,6 @@
 {
   "name": "@svelte-plugins/tooltips",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0-beta.1",
   "license": "MIT",
   "description": "A simple tooltip action and component designed for Svelte.",
   "author": "Kieran Boyle (https://github.com/dysfunc)",
