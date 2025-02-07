@@ -16,7 +16,7 @@ export const tooltip = (element, props) => {
     }
   };
 
-  const config = {
+  let config = {
     ...props,
     targetElement: element,
   };
@@ -99,6 +99,13 @@ export const tooltip = (element, props) => {
 
       if (title) {
         element.setAttribute('title', title);
+      }
+    },
+    update(updatedProps) {
+      Object.assign(config, updatedProps);
+
+      if (component) {
+        component.$set(config);
       }
     }
   };

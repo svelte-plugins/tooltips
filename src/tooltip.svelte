@@ -25,7 +25,8 @@
     arrow = true,
     autoPosition = false,
     style = null,
-    show = false } = $props();
+    show = false
+  } = $props();
 
   /** @type {HTMLSpanElement | null} */
   let containerRef = null;
@@ -197,15 +198,14 @@
   };
 
   let isComponent = $derived(typeof content === 'object');
+
   $effect(() => {
-    if(action)
-      addListeners();
+    if (action) addListeners();
   });
 
   $effect(() => {
     tooltipRef && show ? setTimeout(onShow, 0) : setTimeout(onHide, 0);
   });
-
 </script>
 
 {#if content}
@@ -239,8 +239,8 @@
     --tooltip-background-color: rgba(0, 0, 0, 0.9);
     --tooltip-border-radius: 4px;
     --tooltip-box-shadow: 0 1px 20px rgba(0, 0, 0, 0.25);
-    --tooltip-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-      Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    --tooltip-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     --tooltip-font-size: 14px;
     --tooltip-font-weight: 500;
     --tooltip-line-height: 1.25rem;
