@@ -4,6 +4,21 @@ A simple tooltip action and component designed for Svelte.
 
 Try it in the [Svelte REPL](https://svelte.dev/repl/e63e262a91834400aa567b9b0d20675a?version=3.49.0).
 
+## Svelte 5
+To install the Svelte 5 version you need to use the `beta` package.
+
+```bash
+yarn add @svelte-plugins/tooltips@beta
+
+# or with NPM
+
+npm i @svelte-plugins/tooltips@beta
+
+# or with PNPM
+
+pnpm i @svelte-plugins/tooltips@beta
+```
+
 ## Install
 
 ```bash
